@@ -6,6 +6,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('tomatotimer.views',
     url(r'^$', 'index'),
+    # Chrome Notification
+    url(r'^chrome/popup-tomato/$', 'chrome_popup_tomato'),
+    url(r'^chrome/popup-break/$', 'chrome_popup_break'),
 )
 
 # for staticfiles

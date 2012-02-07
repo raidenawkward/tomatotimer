@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+	var POPUP_CANCEL_TIMEOUT = -1;
 	var DEFAULT_TASK_DESC = '[nameless tomatotimer task]';
 	var LAST_TASK_DESC = "timout:last_task_desc";
 	var LAST_TASK_START_TIME = "timout:last_task_start_time";
@@ -42,7 +43,7 @@ $(document).ready(function(){
 	//
 
 	window.onTimeout = function() {
-		taskFinished();
+		//taskFinished();
 
 		var permission;
 		permission = window.webkitNotifications.checkPermission();
@@ -82,9 +83,9 @@ $(document).ready(function(){
 
 		var popup_html ;
 		if ( timerName == 'tomato' ) {
-			popup_html = "popup-tomato.html"
+			popup_html = "/tomatotimer/chrome/popup-tomato"
 		} else {
-			popup_html = "popup-break.html"
+			popup_html = "/tomatotimer/chrome/popup-break"
 		}
 
 		window.popup = popup = window.webkitNotifications.createHTMLNotification(popup_html);
@@ -96,21 +97,15 @@ $(document).ready(function(){
 	}
 
 	function taskFinished() {
-		$('#lastDescription').html(currentTaskDesc);
+		#$('#lastDescription').html(currentTaskDesc);
 
 		finalTaskMillis = -1;
 
 		timerFinish = new Date();
-		if ( timerName == 'pomodoro' ) {
-			$('#currentTaskFinish').html(formatTimeDate(timerFinish));
-
-			initViewGroup('breakGroup');
+		if ( timerName == 'tomato' ) {
+			//$('#currentTaskFinish').html(formatTimeDate(timerFinish));
 		} else {
-			$('#lastBreakFinish').html(formatTimeDate(timerFinish));
-
-			initInputMessages('lastTaskMessage');
-
-			initViewGroup('inputGroup');
+			//$('#lastBreakFinish').html(formatTimeDate(timerFinish));
 		}
 	}
 
@@ -214,7 +209,6 @@ $(document).ready(function(){
 		localStorage[LAST_TASK_START_TIME] = (new Date()).getTime();
 	});
 /*
-	var POPUP_CANCEL_TIMEOUT = -1;
 //	var POPUP_CANCEL_TIMEOUT = 66666;
 //	var POPUP_CANCEL_TIMEOUT = 10600;
 //	var POPUP_CANCEL_TIMEOUT = 1000;

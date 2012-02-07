@@ -1,0 +1,56 @@
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+{% get_media_prefix as MEDIA_PREFIX %} 
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Timout - Time Management -- Task finished</title>
+
+    <link rel="stylesheet" href="{{ STATIC_PREFIX }}css/bootstrap.css">
+	<link rel="stylesheet" href="{{ STATIC_PREFIX }}css/tomatotimer.css"/>
+
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<script type="text/javascript" src="{{ STATIC_PREFIX }}js/jquery.js"></script>
+
+	<script type="text/javascript" src="{{ STATIC_PREFIX }}js/bootstrap-modal.js"></script>
+	<script type="text/javascript" src="{{ STATIC_PREFIX }}js/bootstrap-button.js"></script>
+	<script type="text/javascript" src="{{ STATIC_PREFIX }}js/bootstrap-twipsy.js"></script>
+	<script type="text/javascript" src="{{ STATIC_PREFIX }}js/bootstrap-popover.js"></script>
+
+	<script type="text/javascript" src="{{ STATIC_PREFIX }}js/timer.js"></script>
+
+	<style type="text/css">
+		body {
+		padding: 4px;
+		}
+		.well {
+		height: 108px;
+		padding: 4px 8px;
+		}
+	</style>
+</head>
+
+<body>
+
+    <audio src="{{ STATIC_PREFIX }}snd/tomato-finished.wav" preload="auto" autoplay="autoplay">
+	</audio>
+	<audio src="{{ STATIC_PREFIX }}snd/finished-loop.wav" preload="auto" autoplay="autoplay" loop="loop">
+	</audio>
+
+	<div class="well">
+		<span class="label label-warning">Task finished</span><p>
+		<blockquote>
+			<p id="taskDescription" style="font-weight: bold;"></p>
+			<small>started at <span id="pomodoroStart"></span></small>
+		</blockquote>
+	</div>
+
+</body>
+</html>
