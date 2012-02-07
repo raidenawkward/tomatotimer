@@ -1,0 +1,94 @@
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+{% get_media_prefix as MEDIA_PREFIX %} 
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tomato Timer</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_PREFIX }}css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_PREFIX }}css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_PREFIX }}css/tomatotimer.css" />
+
+    <script type="text/javascript" src="{{ STATIC_PREFIX }}js/jquery.js"></script>
+    <script type="text/javascript" src="{{ STATIC_PREFIX }}js/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="{{ STATIC_PREFIX }}js/bootstrap-button.js"></script>
+    <script type="text/javascript" src="{{ STATIC_PREFIX }}js/bootstrap-twipsy.js"></script>
+    <script type="text/javascript" src="{{ STATIC_PREFIX }}js/bootstrap-popover.js"></script>
+
+    <script type="text/javascript" src="{{ STATIC_PREFIX }}js/timer.js"></script>
+</head>
+<body>
+    <div class="container">
+
+		<div class="row">
+            <div class="span12">
+                <div class="well">
+                <a href="/" class="nohover">
+                    <h1>Tomato Timer <small>Time Manager - The Pomodoro Technique</small> </h1>
+                </a>
+                </div>
+            </div>
+		</div>
+		<div class="row">
+			<div class="span12">
+				<div id="wrong_browser" class="alert-message error" hidden="hidden">
+					<p><strong>Google Chrome required!</strong><br/>
+						Notifications are not supported for this Browser/OS version yet.
+						This application needs <strong>desktop notifications</strong>,
+						which are currently implemented in <strong>Google Chrome</strong> only.
+					</p>
+				</div>
+				<div id="no_permission" class="alert-message warning" hidden="hidden">
+					<p><strong>Notifications Permission required!</strong><br/>
+						Notifications are not granted for this Browser.
+						<strong>Allow Notifications permission</strong>
+						to this application to use all cool application features.
+					</p>
+				</div>
+			</div>
+        </div>
+        <div class="row">
+			<div class="span8">
+                <div class="row">
+                    <div class="span4">
+                        <!-- the timer -->
+                        <div class="well" id="currentTime">00:00</div>
+                    </div>
+                    <div class="span4">
+                        <!-- Task Description -->
+                        <div class="well height1">
+                            <blockquote>
+                            todo task desc
+                            <small>Start at </small>
+                            </blockquote>
+                            <button id="taskStart" class="btn success span2">Start</button>
+                        </div>
+                    </div> 
+                </div>
+                <div class="row">
+                    <div class="span8">
+                        <!-- Activity Inventroy -->
+                        <div class="well height1">activity inventroy</div>
+                    </div>
+                </div>
+			</div>
+
+			<div class="span4">
+                <!-- Today Todo List -->
+                <div class="well height2">today todo</div>
+			</div>
+		</div>
+
+	<footer>
+		<p>&copy;2012 tomatotimer - v0.1</p>
+	</footer>
+</div>
+<!-- /container -->
+
+<a target="_blank" href="https://github.com/richard-ma/tomatotimer">
+    <img style="position: absolute; z-index: 5; top: 0; right: 0; border: 0;" src="{{ STATIC_PREFIX }}images/forkme_right_red.png" alt="Fork me on GitHub" />
+</a>
+</body>
+</html>

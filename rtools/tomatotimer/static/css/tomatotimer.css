@@ -1,0 +1,49 @@
+/* Override some defaults */
+html, body {
+	background-color: #eee;
+}
+body {
+	padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
+}
+
+/* height framework */
+.height1 {
+    height: 220px;
+}
+
+.height2 {
+    height: 500px;
+}
+
+#currentTime {
+	font-size: 100px;
+	line-height: 120px;
+	border-radius: 10px;
+	font-weight: bold;
+	padding: 40px;
+	color: white;
+	text-align: center;
+}
+.tomato {
+	background-color: #C43C35;
+}
+.short_break {
+	background-color: #339BB9;
+}
+.long_break {
+	background-color: #0064CD;
+}
+
+.taskLabel {
+	text-align: left;
+	font-weight: bold;
+	font-size: 32px;
+}
+
+a.nohover:hover {
+	text-decoration: none;
+}
+
+html {
+	overflow: auto;
+}
