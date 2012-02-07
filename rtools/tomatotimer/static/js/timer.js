@@ -97,7 +97,7 @@ $(document).ready(function(){
 	}
 
 	function taskFinished() {
-		#$('#lastDescription').html(currentTaskDesc);
+		//#$('#lastDescription').html(currentTaskDesc);
 
 		finalTaskMillis = -1;
 
