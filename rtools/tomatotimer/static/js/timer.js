@@ -78,7 +78,7 @@ $(document).ready(function(){
 		}
 		$('#currentTime').html(formatTimeSec(remTime));
 
-//		console.log("onTick: " + (new Date()) + " - remTime: " + remTime);
+		console.log("onTick: " + (new Date()) + " - remTime: " + remTime);
 
 		if (remTime > 0) {
 			timeout = setTimeout("onTick()", 1000);
@@ -374,16 +374,5 @@ $(document).ready(function(){
 		$('#pomodoroStart').html(formatTimeDate(pomodoroStart));
 	}
 
-
-	$('#breakCancel').click(function(event){
-		event.preventDefault();
-		console.log("Clicked #breakCancel");
-
-		$('#lastTaskFinish').html(formatTimeDate(timerFinish));
-
-		initInputMessages('skippedBreakMessage');
-
-		initViewGroup('inputGroup');
-	});
 */
 });
