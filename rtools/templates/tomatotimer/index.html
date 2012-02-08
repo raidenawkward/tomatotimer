@@ -53,31 +53,77 @@
 			<div class="span8">
                 <div class="row">
                     <div class="span4">
-                        <!-- the timer -->
-                        <div class="well" id="currentTime">00:00</div>
+                        <div class="well">
+
+<!-- The Timer -->
+<div id="currentTime" class="tomato">00:00</div>
+<!-- /The Timer -->
+
+                        </div>
                     </div>
                     <div class="span4">
-                        <!-- Task Description -->
-                        <div class="well height1">
-                            <blockquote>
-                            todo task desc
-                            <small>Start at </small>
-                            </blockquote>
-                            <button id="taskStart" class="btn success span2">Start</button>
-                        </div>
+
+<!-- Task Description -->
+<div class="row">
+    <div class="span4">
+        <div class="well" style="height:110px">
+            <blockquote>
+                <h1 id="taskTitle">Task Title</h1>
+                <span id="taskDesc">task description</span>
+                <small>
+                    <span id="tastStartTime"></span>
+                    <span id="tastFinishTime"></span>
+                </small>
+            </blockquote>
+        </div>
+    </div>
+</div>
+<!-- /Task Description -->
+
+<!-- Task Controller -->
+<div class="row">
+    <div class="span4">
+        <div class="well" style="height:30px">
+            <div id="startButtonGroup" class="btn-container">
+                <button id="taskStart" class="btn btn-success btn-controller span3">Start</button>
+            </div>
+            <div id="interruptionButtonGroup" class="btn-container" hidden="hidden">
+                <button id="taskInterruption" class="btn btn-danger btn-controller span3">Interruption</button>
+            </div>
+            <div id="breakButtonGroup" class="btn-container" hidden="hidden">
+                <div class="btn-group span3">
+                <button id="taskShortBreak" class="btn btn-info btn-controller">Short Break</button>
+                <button id="taskLongBreak" class="btn btn-primary btn-controller">Long Break</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Task Controller -->
+
                     </div> 
                 </div>
                 <div class="row">
                     <div class="span8">
-                        <!-- Activity Inventroy -->
-                        <div class="well height1">activity inventroy</div>
+
+<!-- Activity Inventroy -->
+<div class="well height1">
+    activity inventroy
+</div>
+<!-- /Activity Inventroy -->
+
                     </div>
                 </div>
 			</div>
 
 			<div class="span4">
-                <!-- Today Todo List -->
-                <div class="well height2">today todo</div>
+
+<!-- Today Todo List -->
+<div class="well height2">
+    today todo
+</div>
+<!-- /Today Todo List -->
+
 			</div>
 		</div>
 

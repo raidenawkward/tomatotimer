@@ -5,23 +5,34 @@ $(document).ready(function(){
 	var LAST_TASK_DESC = "timout:last_task_desc";
 	var LAST_TASK_START_TIME = "timout:last_task_start_time";
 
+//	var currentTaskTitle = 'Task';
+	var timerStart = null;
+	var timerFinish = null;
+	var timerName = 'unknown';
+
+	var popup = null;
 	var currentTaskDesc = DEFAULT_TASK_DESC;
 	var finalTaskMillis = -1;
 	var timeout = null;
 
 	var timers = [
-		{ name: "tomato", title: "Tomato", time: 1500 },
-		{ name: "long_break", title: "Long Break", time: 900 },
-		{ name: "short_break", title: "Short Break", time: 300 }
+// PRODUCTION
+//		{ name: "tomato", title: "Tomato", time: 1500 },
+//		{ name: "long_break", title: "Long Break", time: 900 },
+//		{ name: "short_break", title: "Short Break", time: 300 }
 
-//		{ name: "pomodoro", title: "Pomodoro Task", time: 25 },
+// DEBUG
+//		{ name: "tomato", title: "Pomodoro Task", time: 25 },
 //		{ name: "long_break", title: "Long break", time: 15 },
 //		{ name: "short_break", title: "Short break", time: 5 }
-//		{ name: "pomodoro", title: "Pomodoro Task", time: 5 },
-//		{ name: "long_break", title: "Long break", time: 3 },
-//		{ name: "short_break", title: "Short break", time: 1 }
+		{ name: "tomato", title: "Pomodoro Task", time: 5 },
+		{ name: "long_break", title: "Long break", time: 3 },
+		{ name: "short_break", title: "Short break", time: 1 }
 	];
 
+	var buttonGroups = [
+		"startButtonGroup", "interruptionButtonGroup", "breakButtonGroup"
+	];
 
 	// check for notifications support
 	if (window.webkitNotifications) {
@@ -43,7 +54,7 @@ $(document).ready(function(){
 	//
 
 	window.onTimeout = function() {
-		//taskFinished();
+		taskFinished();
 
 		var permission;
 		permission = window.webkitNotifications.checkPermission();
@@ -104,8 +115,10 @@ $(document).ready(function(){
 		timerFinish = new Date();
 		if ( timerName == 'tomato' ) {
 			//$('#currentTaskFinish').html(formatTimeDate(timerFinish));
+            initButtonGroup('breakButtonGroup');
 		} else {
 			//$('#lastBreakFinish').html(formatTimeDate(timerFinish));
+            initButtonGroup('startButtonGroup');
 		}
 	}
 
@@ -151,6 +164,27 @@ $(document).ready(function(){
 	};
 
 
+    // INIT BUTTONGROUP
+    function initButtonGroup(name) {
+		if ( timeout != null ) {
+			console.log("Interrupt timeout: " + timeout);
+			clearTimeout(timeout);
+		}
+		finalTaskMillis = -1;
+
+		for (_i = 0, _len = buttonGroups.length; _i < _len; _i++) {
+			buttonGroup = buttonGroups[_i];
+			if (buttonGroup == name) {
+				$('#' + buttonGroup).slideDown("slow");
+			} else {
+				$('#' + buttonGroup).slideUp("slow");
+			}
+		}
+		if ( popup != null ) {
+			popup.cancel();
+			popup = null;
+		}
+	}
 
     // INIT TIMERSTART
     function initTimer(name) {
@@ -184,7 +218,7 @@ $(document).ready(function(){
 	//
 
 	$('#taskStart').click(function(event){
-		//event.preventDefault();
+		event.preventDefault();
 		console.log("Clicked #taskStart");
 
 		if (window.webkitNotifications) {
@@ -203,52 +237,83 @@ $(document).ready(function(){
 		$('#currentTaskDesc').html(currentTaskDesc);
 */
 
+		initButtonGroup('interruptionButtonGroup');
+
 		initTimer('tomato');
 
 		localStorage[LAST_TASK_DESC] = currentTaskDesc;
 		localStorage[LAST_TASK_START_TIME] = (new Date()).getTime();
+	});
+
+	//
+	// TIME INTERRUPTION
+	//
+
+	$('#taskInterruption').click(function(event){
+		event.preventDefault();
+		console.log("Clicked #timeInterrupt");
+
+		now = new Date();
+		console.log("now: " + now);
+		if ( timerName == 'tomato' ) {
+			console.log("timerStart : " + timerStart);
+
+			//$('#lastTaskStart').html(formatTimeDate(timerStart));
+			duration = Math.round((now - timerStart)/1000);
+			console.log("duration: " + duration);
+			//$('#lastTaskDuration').html(formatTimeSec(duration));
+
+			//initInputMessages('interruptedTaskMessage');
+		} else {
+			console.log("timerFinish: " + timerFinish);
+			console.log("timerStart : " + timerStart);
+
+			//$('#lastTaskFinish2').html(formatTimeDate(timerFinish));
+			duration = Math.round((now - timerStart)/1000);
+			console.log("duration: " + duration);
+			//$('#lastBreakDuration').html(formatTimeSec(duration));
+
+			//initInputMessages('interruptedBreakMessage');
+		}
+
+		initButtonGroup('startButtonGroup');
+	});
+
+	//
+	// START BREAK
+	//
+
+	$('#taskShortBreak').click(function(event){
+		event.preventDefault();
+		console.log("Clicked #shortBreak");
+
+		//$('#lastDescription').html(currentTaskDesc);
+
+		initButtonGroup('interruptionButtonGroup');
+
+		initTimer('short_break');
+	});
+
+	$('#taskLongBreak').click(function(event){
+		event.preventDefault();
+		console.log("Clicked #longBreak");
+
+		//$('#lastDescription').html(currentTaskDesc);
+
+		initButtonGroup('interruptionButtonGroup');
+
+		initTimer('long_break');
 	});
 /*
 //	var POPUP_CANCEL_TIMEOUT = 66666;
 //	var POPUP_CANCEL_TIMEOUT = 10600;
 //	var POPUP_CANCEL_TIMEOUT = 1000;
 
-//	var currentTaskTitle = 'Task';
-	var timerStart = null;
-	var timerFinish = null;
-	var timerName = 'unknown';
-
-	var popup = null;
-
-	var viewGroups = [
-		"breakGroup", "inputGroup", "timeGroup"
-	];
 
 	var inputMessages = [
 		"interruptedTaskMessage", "skippedBreakMessage", "lastTaskMessage", "interruptedBreakMessage"
 	];
 
-
-	function initViewGroup(name) {
-		if ( timeout != null ) {
-			console.log("Interrupt timeout: " + timeout);
-			clearTimeout(timeout);
-		}
-		finalTaskMillis = -1;
-
-		for (_i = 0, _len = viewGroups.length; _i < _len; _i++) {
-			viewGroup = viewGroups[_i];
-			if (viewGroup == name) {
-				$('#' + viewGroup).slideDown("slow");
-			} else {
-				$('#' + viewGroup).slideUp("slow");
-			}
-		}
-		if ( popup != null ) {
-			popup.cancel();
-			popup = null;
-		}
-	}
 
 	function initInputMessages(name) {
 		for (_i = 0, _len = inputMessages.length; _i < _len; _i++) {
@@ -310,40 +375,6 @@ $(document).ready(function(){
 	}
 
 
-	//
-	// TIME INTERRUPTION
-	//
-
-	$('#timeInterrupt').click(function(event){
-		event.preventDefault();
-		console.log("Clicked #timeInterrupt");
-
-		now = new Date();
-		console.log("now: " + now);
-		if ( timerName == 'pomodoro' ) {
-			console.log("timerStart : " + timerStart);
-
-			$('#lastTaskStart').html(formatTimeDate(timerStart));
-			duration = Math.round((now - timerStart)/1000);
-			console.log("duration: " + duration);
-			$('#lastTaskDuration').html(formatTimeSec(duration));
-
-			initInputMessages('interruptedTaskMessage');
-		} else {
-			console.log("timerFinish: " + timerFinish);
-			console.log("timerStart : " + timerStart);
-
-			$('#lastTaskFinish2').html(formatTimeDate(timerFinish));
-			duration = Math.round((now - timerStart)/1000);
-			console.log("duration: " + duration);
-			$('#lastBreakDuration').html(formatTimeSec(duration));
-
-			initInputMessages('interruptedBreakMessage');
-		}
-
-		initViewGroup('inputGroup');
-	});
-
 	$('#breakCancel').click(function(event){
 		event.preventDefault();
 		console.log("Clicked #breakCancel");
@@ -353,32 +384,6 @@ $(document).ready(function(){
 		initInputMessages('skippedBreakMessage');
 
 		initViewGroup('inputGroup');
-	});
-
-	//
-	// START BREAK
-	//
-
-	$('#shortBreak').click(function(event){
-		event.preventDefault();
-		console.log("Clicked #shortBreak");
-
-		$('#lastDescription').html(currentTaskDesc);
-
-		initViewGroup('timeGroup');
-
-		initTimer('short_break');
-	});
-
-	$('#longBreak').click(function(event){
-		event.preventDefault();
-		console.log("Clicked #longBreak");
-
-		$('#lastDescription').html(currentTaskDesc);
-
-		initViewGroup('timeGroup');
-
-		initTimer('long_break');
 	});
 */
 });
