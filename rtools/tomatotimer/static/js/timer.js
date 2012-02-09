@@ -1,6 +1,11 @@
 $(document).ready(function(){
 
     //
+    // var origin
+    //
+    var o_task = {title: '', desc: '', priority: ''};
+
+    //
     // VAR INIT
     //
 
@@ -8,6 +13,18 @@ $(document).ready(function(){
 	var DEFAULT_TASK_DESC = '[nameless tomatotimer task]';
 	var LAST_TASK_DESC = "timout:last_task_desc";
 	var LAST_TASK_START_TIME = "timout:last_task_start_time";
+    var PRIORITY2STYLE = {
+        'itp-critical': 'label-important',
+        'itp-rush':     'label-warning',
+        'itp-normal':   'label-info',
+        'itp-low':      'label-seccess',
+    };
+    var PRIORITY2TEXT = {
+        'itp-critical': 'Critical',
+        'itp-rush':     'Rush',
+        'itp-normal':   'Normal',
+        'itp-low':      'Low',
+    };
 
 //	var currentTaskTitle = 'Task';
 	var timerStart = null;
@@ -18,6 +35,9 @@ $(document).ready(function(){
 	var currentTaskDesc = DEFAULT_TASK_DESC;
 	var finalTaskMillis = -1;
 	var timeout = null;
+    var aiTaskList = new Array();
+    var todoTaskList = [];
+
 
 	var timers = [
 // RELEASE
@@ -198,9 +218,9 @@ $(document).ready(function(){
 		for (_i = 0, _len = AIGroups.length; _i < _len; _i++) {
 			AIGroup = AIGroups[_i];
 			if (AIGroup == name) {
-				$('#' + AIGroup).fadeIn("slow");
+				$('#' + AIGroup).slideDown("slow");
 			} else {
-				$('#' + AIGroup).fadeOut("slow");
+				$('#' + AIGroup).slideUp("slow");
 			}
 		}
         /*
@@ -210,6 +230,21 @@ $(document).ready(function(){
 		}
         */
 	}
+
+    function refreshActivityInventroyListView() {
+        _html = '';
+        $('#aiList').html(_html);
+        for (_i = aiTaskList.length - 1; _i >= 0; _i--) {
+            _task = aiTaskList[_i];
+            _html = '<tr>';
+            _html += '<td>' + aiTaskList[_i].title +'</td>';
+            _html += '<td><span class="label ' +PRIORITY2STYLE[aiTaskList[_i].priority]+'">' + PRIORITY2TEXT[aiTaskList[_i].priority] +'</span></td>';
+            // TODO: add operation icon
+            _html += '<td>'+'</td>';
+            _html += '</tr>';
+            $('#aiList').append(_html);
+        }
+    }
 
     // INIT TIMER
     function initTimer(name) {
@@ -345,6 +380,14 @@ $(document).ready(function(){
 		console.log("Clicked #appendTask");
 
         // append task
+        var _task = $(o_task);
+        _task.title = $('#itaskTitle').val();
+        _task.desc = $('#itaskDesc').val();
+        _task.priority = $('#itaskPriority').val();
+
+        aiTaskList[aiTaskList.length] = _task;
+
+        refreshActivityInventroyListView();
 
         initAIGroup('activityInventroyListView');
     });
@@ -353,11 +396,13 @@ $(document).ready(function(){
 		event.preventDefault();
 		console.log("Clicked #appendTaskIcon");
 
-        // append task
-
         initAIGroup('activityInventroyAppendView');
     });
     
+    //
+    // INIT EXECUTE
+    //
+    refreshActivityInventroyListView();
 /*
 //	var POPUP_CANCEL_TIMEOUT = 66666;
 //	var POPUP_CANCEL_TIMEOUT = 10600;

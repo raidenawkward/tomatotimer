@@ -110,7 +110,17 @@
 <div class="well height1">
     <div id="activityInventroyListView">
         <!-- Activity Inventroy List View -->
-        <span id="appendTaskIcon" style="height:180px">Activity List</span>
+        <h3>Activity Inventroy <i id="appendTaskIcon" class="icon-plus-sign"></i></h3>
+        <table class="table table-striped">
+            <thead>
+                <th class="span3">Task</th>
+                <th class="span2">Priority</th>
+                <th class="span2">Operation</th>
+            </thead>
+            <tbody id="aiList">
+                <!-- aiList dom handled by javascript -->
+            </tbody>
+        </table>
         <!-- /Activity Inventroy List View -->
     </div>
     <div id="activityInventroyAppendView" hidden="hidden">
@@ -118,7 +128,7 @@
         <form class="form-horizontal">
         <fieldset>
         <div class="control-group">
-            <label class="control-label">Task</label>
+            <label class="control-label">New Task</label>
             <div class="controls">
                 <input id="itaskTitle" type="text" />
                 <span class="help-inline">Title of task</span>
@@ -144,8 +154,7 @@
             </div>
         </div>
         <div class="form-actions">
-            <button id="appendTask" type="submit" class="btn btn-primary">Append Task</button>
-            <button id="resetAppendTask" type="reset" class="btn">Reset</button>
+            <button id="appendTask" type="submit" class="btn btn-primary">Save</button>
             <button id="cancelAppendTask" type="reset" class="btn btn-danger">Cancel</button>
         </div>
         </fieldset>
