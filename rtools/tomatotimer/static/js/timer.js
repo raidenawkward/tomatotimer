@@ -3,7 +3,7 @@ $(document).ready(function(){
     //
     // var origin
     //
-    var o_task = {title: '', desc: '', priority: ''};
+    o_task = {id: '', title: '', desc: '', priority: ''};
 
     //
     // VAR INIT
@@ -11,8 +11,9 @@ $(document).ready(function(){
 
 	var POPUP_CANCEL_TIMEOUT = -1;
 	var DEFAULT_TASK_DESC = '[nameless tomatotimer task]';
-	var LAST_TASK_DESC = "timout:last_task_desc";
-	var LAST_TASK_START_TIME = "timout:last_task_start_time";
+    var INIT_TASK_ID = 0;
+    var LAST_TASK_DESC = "timout:last_task_desc";
+    var LAST_TASK_START_TIME = "timout:last_task_start_time";
     var PRIORITY2STYLE = {
         'itp-critical': 'label-important',
         'itp-rush':     'label-warning',
@@ -35,23 +36,25 @@ $(document).ready(function(){
 	var currentTaskDesc = DEFAULT_TASK_DESC;
 	var finalTaskMillis = -1;
 	var timeout = null;
-    var aiTaskList = new Array();
-    var todoTaskList = [];
+    var last_task_id = INIT_TASK_ID;
+
+    aiTaskList = new Array();
+    todoTaskList = new Array();
 
 
 	var timers = [
 // RELEASE
-//		{ name: "tomato", title: "Tomato", time: 1500 },
-//		{ name: "long_break", title: "Long Break", time: 900 },
-//		{ name: "short_break", title: "Short Break", time: 300 }
+		{ name: "tomato", title: "Tomato", time: 1500 },
+		{ name: "long_break", title: "Long Break", time: 900 },
+		{ name: "short_break", title: "Short Break", time: 300 }
 
 // DEBUG
 //		{ name: "tomato", title: "Pomodoro Task", time: 25 },
 //		{ name: "long_break", title: "Long break", time: 15 },
 //		{ name: "short_break", title: "Short break", time: 5 }
-		{ name: "tomato", title: "Pomodoro Task", time: 5 },
-		{ name: "long_break", title: "Long break", time: 3 },
-		{ name: "short_break", title: "Short break", time: 1 }
+//		{ name: "tomato", title: "Pomodoro Task", time: 5 },
+//		{ name: "long_break", title: "Long break", time: 3 },
+//		{ name: "short_break", title: "Short break", time: 1 }
 	];
 
 	var buttonGroups = [
@@ -59,7 +62,7 @@ $(document).ready(function(){
 	];
 
 	var AIGroups = [
-		"activityInventroyListView", "activityInventroyAppendView"
+		"activityInventoryListView", "activityInventoryAppendView"
 	];
 
 	// check for notifications support
@@ -76,6 +79,11 @@ $(document).ready(function(){
 		console.log("Notifications are not supported for this Browser/OS version yet.");
 		$('#wrong_browser').slideDown("slow");
 	}
+    
+    //
+    // INIT EXECUTE
+    //
+    initActivityInventoryListView();
 
 	//
 	// FUNCTIONS
@@ -136,6 +144,7 @@ $(document).ready(function(){
 	}
 
 	function taskFinished() {
+        console.log("taskFinished");
 		//#$('#lastDescription').html(currentTaskDesc);
 
 		finalTaskMillis = -1;
@@ -193,6 +202,8 @@ $(document).ready(function(){
 
     // INIT BUTTONGROUP
     function initButtonGroup(name) {
+        console.log("initButtonGroup: " + name);
+
 		if ( timeout != null ) {
 			console.log("Interrupt timeout: " + timeout);
 			clearTimeout(timeout);
@@ -202,9 +213,9 @@ $(document).ready(function(){
 		for (_i = 0, _len = buttonGroups.length; _i < _len; _i++) {
 			buttonGroup = buttonGroups[_i];
 			if (buttonGroup == name) {
-				$('#' + buttonGroup).slideDown("slow");
+				$('#' + buttonGroup).slideDown("fast");
 			} else {
-				$('#' + buttonGroup).slideUp("slow");
+				$('#' + buttonGroup).slideUp("fast");
 			}
 		}
 		if ( popup != null ) {
@@ -213,8 +224,10 @@ $(document).ready(function(){
 		}
 	}
 
-    // INIT ACTIVITYINVENTROYGROUP
+    // INIT ACTIVITYINVENTORYGROUP
     function initAIGroup(name) {
+        console.log("initAIGroup: " + name);
+
 		for (_i = 0, _len = AIGroups.length; _i < _len; _i++) {
 			AIGroup = AIGroups[_i];
 			if (AIGroup == name) {
@@ -231,19 +244,26 @@ $(document).ready(function(){
         */
 	}
 
-    function refreshActivityInventroyListView() {
-        _html = '';
-        $('#aiList').html(_html);
+    function initActivityInventoryListView() {
+        console.log("initActivityInventoryListView");
+
         for (_i = aiTaskList.length - 1; _i >= 0; _i--) {
             _task = aiTaskList[_i];
-            _html = '<tr>';
-            _html += '<td>' + aiTaskList[_i].title +'</td>';
-            _html += '<td><span class="label ' +PRIORITY2STYLE[aiTaskList[_i].priority]+'">' + PRIORITY2TEXT[aiTaskList[_i].priority] +'</span></td>';
-            // TODO: add operation icon
-            _html += '<td>'+'</td>';
-            _html += '</tr>';
-            $('#aiList').append(_html);
+            appendToActivityInventoryListView(_task);
         }
+    }
+    
+    function appendToActivityInventoryListView(task) {
+		console.log("appendToActivityInventoryListView: " + task);
+
+        _html = '';
+        _html = '<tr id="task-' +task.id+ '">';
+        _html += '<td><i class="icon-remove-sign" onclick="removeTaskFromActivityInventoryListView(' +task.id+ ');"></i> ' +task.title+ '</td>';
+        _html += '<td><span class="label ' +PRIORITY2STYLE[task.priority]+'">' +PRIORITY2TEXT[task.priority]+ '</span></td>';
+        // TODO: add operation icon
+        _html += '<td><i class="icon-chevron-right"></i></td>';
+        _html += '</tr>';
+        $('#aiList').prepend(_html);
     }
 
     // INIT TIMER
@@ -366,13 +386,13 @@ $(document).ready(function(){
 	});
 
     //
-    // Activity Inventroy Group View
+    // Activity Inventory Group View
     //
 	$('#cancelAppendTask').click(function(event){
 		event.preventDefault();
 		console.log("Clicked #cancelAppendTask");
 
-        initAIGroup('activityInventroyListView');
+        initAIGroup('activityInventoryListView');
     });
     
 	$('#appendTask').click(function(event){
@@ -381,28 +401,24 @@ $(document).ready(function(){
 
         // append task
         var _task = $(o_task);
+        _task.id = last_task_id; last_task_id += 1;
         _task.title = $('#itaskTitle').val();
         _task.desc = $('#itaskDesc').val();
         _task.priority = $('#itaskPriority').val();
 
         aiTaskList[aiTaskList.length] = _task;
 
-        refreshActivityInventroyListView();
+        appendToActivityInventoryListView(_task);
 
-        initAIGroup('activityInventroyListView');
+        initAIGroup('activityInventoryListView');
     });
     
 	$('#appendTaskIcon').click(function(event){
 		event.preventDefault();
 		console.log("Clicked #appendTaskIcon");
 
-        initAIGroup('activityInventroyAppendView');
+        initAIGroup('activityInventoryAppendView');
     });
-    
-    //
-    // INIT EXECUTE
-    //
-    refreshActivityInventroyListView();
 /*
 //	var POPUP_CANCEL_TIMEOUT = 66666;
 //	var POPUP_CANCEL_TIMEOUT = 10600;
@@ -475,3 +491,15 @@ $(document).ready(function(){
 
 */
 });
+
+    function removeTaskFromActivityInventoryListView(id) {
+        console.log("removeTaskFromActivityInventoryListView");
+
+        for (_i = aiTaskList.length-1; _i >= 0; _i--) {
+            if (aiTaskList[_i].id == id) {
+                aiTaskList.splice(_i, 1);
+                $('#task-' + id).remove();
+                break;
+            }
+        }
+    }

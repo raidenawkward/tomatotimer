@@ -106,25 +106,33 @@
                 <div class="row">
                     <div class="span8">
 
-<!-- Activity Inventroy -->
+<!-- Activity Inventory -->
 <div class="well height1">
-    <div id="activityInventroyListView">
-        <!-- Activity Inventroy List View -->
-        <h3>Activity Inventroy <i id="appendTaskIcon" class="icon-plus-sign"></i></h3>
+    <div id="activityInventoryListView">
+        <!-- Activity Inventory List View -->
+        <h3 class="span2">Activity Inventory</h3>
+        <a id="appendTaskIcon" class="btn btn-primary offset3" href="#"><i class="icon-plus-sign icon-white"></i> New Task</a>
         <table class="table table-striped">
             <thead>
                 <th class="span3">Task</th>
                 <th class="span2">Priority</th>
-                <th class="span2">Operation</th>
+                <th class="span2"></th>
             </thead>
             <tbody id="aiList">
                 <!-- aiList dom handled by javascript -->
+                <!--
+                <tr id="task-{task.id}">
+                    <td><i class="icon-remove-sign" onclick="removeTaskFromActivityInventoryListView({task.id});"></i>{task.title}</td>
+                    <td><span class="label label-important">priority</span></td>';
+                    <td><i class="icon-chevron-right"></i></td>
+                </tr>
+                -->
             </tbody>
         </table>
-        <!-- /Activity Inventroy List View -->
+        <!-- /Activity Inventory List View -->
     </div>
-    <div id="activityInventroyAppendView" hidden="hidden">
-        <!-- Activity Inventroy Append View -->
+    <div id="activityInventoryAppendView" hidden="hidden">
+        <!-- Activity Inventory Append View -->
         <form class="form-horizontal">
         <fieldset>
         <div class="control-group">
@@ -159,10 +167,10 @@
         </div>
         </fieldset>
         </form>
-        <!-- /Activity Inventroy Append View -->
+        <!-- /Activity Inventory Append View -->
     </div>
 </div>
-<!-- /Activity Inventroy -->
+<!-- /Activity Inventory -->
 
                     </div>
                 </div>
