@@ -1,5 +1,9 @@
 $(document).ready(function(){
 
+    //
+    // VAR INIT
+    //
+
 	var POPUP_CANCEL_TIMEOUT = -1;
 	var DEFAULT_TASK_DESC = '[nameless tomatotimer task]';
 	var LAST_TASK_DESC = "timout:last_task_desc";
@@ -16,7 +20,7 @@ $(document).ready(function(){
 	var timeout = null;
 
 	var timers = [
-// PRODUCTION
+// RELEASE
 //		{ name: "tomato", title: "Tomato", time: 1500 },
 //		{ name: "long_break", title: "Long Break", time: 900 },
 //		{ name: "short_break", title: "Short Break", time: 300 }
@@ -186,7 +190,7 @@ $(document).ready(function(){
 		}
 	}
 
-    // INIT TIMERSTART
+    // INIT TIMER
     function initTimer(name) {
         console.log("initTimer: " + name);
 
@@ -228,7 +232,7 @@ $(document).ready(function(){
 			}
 		}
 
-        // get currenttaskdesc
+        // set current task description
 /*		currentTaskDesc = $('#taskDescription').val();
 		if ( currentTaskDesc == '' ) {
 			currentTaskDesc = DEFAULT_TASK_DESC;

@@ -3,16 +3,16 @@ html, body {
 	background-color: #eee;
 }
 body {
-	padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
+	padding-top: 20px; /* 40px to make the container go all the way to the bottom of the topbar */
 }
 
 /* height framework */
 .height1 {
-    height: 240px;
+    height: 180px;
 }
 
 .height2 {
-    height: 500px;
+    height: 440px;
 }
 
 .btn-controller {

@@ -108,7 +108,50 @@
 
 <!-- Activity Inventroy -->
 <div class="well height1">
-    activity inventroy
+    <div id="activityInventroyListView">
+        <!-- Activity Inventroy List View -->
+
+        <!-- /Activity Inventroy List View -->
+    </div>
+    <div id="activityInventroyAppendView" hidden="hidden">
+        <!-- Activity Inventroy Append View -->
+        <form class="form-horizontal">
+        <fieldset>
+        <div class="control-group">
+            <label class="control-label">Task</label>
+            <div class="controls">
+                <input id="itaskTitle" type="text" />
+                <span class="help-inline">Title of task</span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Task Priority</label>
+            <div class="controls">
+                <select id="itaskPriority" type="text">
+                    <option value="itp-critical">Critical</option>
+                    <option value="itp-rush">Rush</option>
+                    <option value="itp-normal" selected>Normal</option>
+                    <option value="itp-low">Low</option>
+                </select>
+                <span class="help-inline">Priority of task</span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Task Description</label>
+            <div class="controls">
+                <input id="itaskDesc" type="text" />
+                <span class="help-inline">(Optional) Details of task</span>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button id="appendTask" type="submit" class="btn btn-primary">Append Task</button>
+            <button id="resetAppendTask" type="reset" class="btn">Reset</button>
+            <button id="cancelAppendTask" type="reset" class="btn btn-danger">Cancel</button>
+        </div>
+        </fieldset>
+        </form>
+        <!-- /Activity Inventroy Append View -->
+    </div>
 </div>
 <!-- /Activity Inventroy -->
 
@@ -120,7 +163,7 @@
 
 <!-- Today Todo List -->
 <div class="well height2">
-    today todo
+    todo list
 </div>
 <!-- /Today Todo List -->
 
