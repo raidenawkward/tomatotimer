@@ -38,6 +38,10 @@ $(document).ready(function(){
 		"startButtonGroup", "interruptionButtonGroup", "breakButtonGroup"
 	];
 
+	var AIGroups = [
+		"activityInventroyListView", "activityInventroyAppendView"
+	];
+
 	// check for notifications support
 	if (window.webkitNotifications) {
 		console.log("Notifications are supported!");
@@ -167,7 +171,6 @@ $(document).ready(function(){
 		return minutes + ":" + secs_remainder;
 	};
 
-
     // INIT BUTTONGROUP
     function initButtonGroup(name) {
 		if ( timeout != null ) {
@@ -188,6 +191,24 @@ $(document).ready(function(){
 			popup.cancel();
 			popup = null;
 		}
+	}
+
+    // INIT ACTIVITYINVENTROYGROUP
+    function initAIGroup(name) {
+		for (_i = 0, _len = AIGroups.length; _i < _len; _i++) {
+			AIGroup = AIGroups[_i];
+			if (AIGroup == name) {
+				$('#' + AIGroup).fadeIn("slow");
+			} else {
+				$('#' + AIGroup).fadeOut("slow");
+			}
+		}
+        /*
+		if ( popup != null ) {
+			popup.cancel();
+			popup = null;
+		}
+        */
 	}
 
     // INIT TIMER
@@ -308,6 +329,35 @@ $(document).ready(function(){
 
 		initTimer('long_break');
 	});
+
+    //
+    // Activity Inventroy Group View
+    //
+	$('#cancelAppendTask').click(function(event){
+		event.preventDefault();
+		console.log("Clicked #cancelAppendTask");
+
+        initAIGroup('activityInventroyListView');
+    });
+    
+	$('#appendTask').click(function(event){
+		event.preventDefault();
+		console.log("Clicked #appendTask");
+
+        // append task
+
+        initAIGroup('activityInventroyListView');
+    });
+    
+	$('#appendTaskIcon').click(function(event){
+		event.preventDefault();
+		console.log("Clicked #appendTaskIcon");
+
+        // append task
+
+        initAIGroup('activityInventroyAppendView');
+    });
+    
 /*
 //	var POPUP_CANCEL_TIMEOUT = 66666;
 //	var POPUP_CANCEL_TIMEOUT = 10600;
