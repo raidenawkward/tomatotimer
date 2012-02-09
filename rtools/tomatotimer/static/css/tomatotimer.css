@@ -6,10 +6,12 @@ body {
 	padding-top: 20px; /* 40px to make the container go all the way to the bottom of the topbar */
 }
 
+.autooverflow {
+    overflow: auto;
+}
 /* height framework */
 .height1 {
     height: 220px;
-    overflow: auto;
 }
 
 .height2 {

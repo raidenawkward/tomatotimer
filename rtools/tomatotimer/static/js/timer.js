@@ -14,13 +14,13 @@ $(document).ready(function(){
     var INIT_TASK_ID = 0;
     var LAST_TASK_DESC = "timout:last_task_desc";
     var LAST_TASK_START_TIME = "timout:last_task_start_time";
-    var PRIORITY2STYLE = {
+    PRIORITY2STYLE = {
         'itp-critical': 'label-important',
         'itp-rush':     'label-warning',
         'itp-normal':   'label-info',
         'itp-low':      'label-seccess',
     };
-    var PRIORITY2TEXT = {
+    PRIORITY2TEXT = {
         'itp-critical': 'Critical',
         'itp-rush':     'Rush',
         'itp-normal':   'Normal',
@@ -84,6 +84,7 @@ $(document).ready(function(){
     // INIT EXECUTE
     //
     initActivityInventoryListView();
+    initTooltips();
 
 	//
 	// FUNCTIONS
@@ -200,6 +201,19 @@ $(document).ready(function(){
 		return minutes + ":" + secs_remainder;
 	};
 
+    function initTooltips() {
+        $('#activityInventoryTitle').popover({
+            title: 'Activity Inventory',
+            content: 'You can add one task by clicking "New Task" Button. And then pick any task to Today\'s TODO List.',
+        });
+
+        $('#aiPriority').popover({
+            placement: 'top',
+            title: 'Task Priority',
+            content: 'Task priorities sorted by urgency level are "Critical", "Rush", "Normal", "Low".',
+        });
+    }
+
     // INIT BUTTONGROUP
     function initButtonGroup(name) {
         console.log("initButtonGroup: " + name);
@@ -243,28 +257,6 @@ $(document).ready(function(){
 		}
         */
 	}
-
-    function initActivityInventoryListView() {
-        console.log("initActivityInventoryListView");
-
-        for (_i = aiTaskList.length - 1; _i >= 0; _i--) {
-            _task = aiTaskList[_i];
-            appendToActivityInventoryListView(_task);
-        }
-    }
-    
-    function appendToActivityInventoryListView(task) {
-		console.log("appendToActivityInventoryListView: " + task);
-
-        _html = '';
-        _html = '<tr id="task-' +task.id+ '">';
-        _html += '<td><i class="icon-remove-sign" onclick="removeTaskFromActivityInventoryListView(' +task.id+ ');"></i> ' +task.title+ '</td>';
-        _html += '<td><span class="label ' +PRIORITY2STYLE[task.priority]+'">' +PRIORITY2TEXT[task.priority]+ '</span></td>';
-        // TODO: add operation icon
-        _html += '<td><i class="icon-chevron-right"></i></td>';
-        _html += '</tr>';
-        $('#aiList').prepend(_html);
-    }
 
     // INIT TIMER
     function initTimer(name) {
@@ -492,14 +484,38 @@ $(document).ready(function(){
 */
 });
 
-    function removeTaskFromActivityInventoryListView(id) {
-        console.log("removeTaskFromActivityInventoryListView");
+//
+// Activity Inventory Operation
+//
+function initActivityInventoryListView() {
+    console.log("initActivityInventoryListView");
 
-        for (_i = aiTaskList.length-1; _i >= 0; _i--) {
-            if (aiTaskList[_i].id == id) {
-                aiTaskList.splice(_i, 1);
-                $('#task-' + id).remove();
-                break;
-            }
+    for (_i = aiTaskList.length - 1; _i >= 0; _i--) {
+        _task = aiTaskList[_i];
+        appendToActivityInventoryListView(_task);
+    }
+}
+    
+function appendToActivityInventoryListView(task) {
+	console.log("appendToActivityInventoryListView: " + task);
+
+    _html = '';
+    _html = '<tr id="task-' +task.id+ '">';
+    _html += '<td><i class="icon-remove-sign" onclick="removeTaskFromActivityInventoryListView(' +task.id+ ');"></i> ' +task.title+ '</td>';
+    _html += '<td><span class="label ' +PRIORITY2STYLE[task.priority]+'">' +PRIORITY2TEXT[task.priority]+ '</span></td>';
+    _html += '<td><a class="btn" href="#">Add TODO <i class="icon-chevron-right"></i></a></td>';
+    _html += '</tr>';
+    $('#aiList').prepend(_html);
+}
+
+function removeTaskFromActivityInventoryListView(id) {
+    console.log("removeTaskFromActivityInventoryListView");
+
+    for (_i = aiTaskList.length-1; _i >= 0; _i--) {
+        if (aiTaskList[_i].id == id) {
+            aiTaskList.splice(_i, 1);
+            $('#task-' + id).remove();
+            break;
         }
     }
+}

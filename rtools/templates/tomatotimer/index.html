@@ -14,7 +14,7 @@
     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/jquery.js"></script>
     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/bootstrap-modal.js"></script>
     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/bootstrap-button.js"></script>
-    <script type="text/javascript" src="{{ STATIC_PREFIX }}js/bootstrap-twipsy.js"></script>
+    <script type="text/javascript" src="{{ STATIC_PREFIX }}js/bootstrap-tooltip.js"></script>
     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/bootstrap-popover.js"></script>
 
     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/timer.js"></script>
@@ -107,24 +107,24 @@
                     <div class="span8">
 
 <!-- Activity Inventory -->
-<div class="well height1">
+<div class="well height1 autooverflow">
     <div id="activityInventoryListView">
         <!-- Activity Inventory List View -->
-        <h3 class="span2">Activity Inventory</h3>
+        <h3 id="activityInventoryTitle" class="span2">Activity Inventory</h3>
         <a id="appendTaskIcon" class="btn btn-primary offset3" href="#"><i class="icon-plus-sign icon-white"></i> New Task</a>
         <table class="table table-striped">
             <thead>
                 <th class="span3">Task</th>
-                <th class="span2">Priority</th>
+                <th class="span2"><span id="aiPriority">Priority</span></th>
                 <th class="span2"></th>
             </thead>
             <tbody id="aiList">
                 <!-- aiList dom handled by javascript -->
-                <!--
+                <!-- HTML code example
                 <tr id="task-{task.id}">
                     <td><i class="icon-remove-sign" onclick="removeTaskFromActivityInventoryListView({task.id});"></i>{task.title}</td>
                     <td><span class="label label-important">priority</span></td>';
-                    <td><i class="icon-chevron-right"></i></td>
+                    <td><a class="btn" href="#">Add TODO <i class="icon-chevron-right"></i></a></td>
                 </tr>
                 -->
             </tbody>
@@ -139,17 +139,17 @@
             <label class="control-label">New Task</label>
             <div class="controls">
                 <input id="itaskTitle" type="text" />
-                <span class="help-inline">Title of task</span>
+                <span class="help-inline">Tast Content</span>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Task Priority</label>
             <div class="controls">
                 <select id="itaskPriority" type="text">
-                    <option value="itp-critical">Critical</option>
+                    <option value="itp-critical">Critical (Highest)</option>
                     <option value="itp-rush">Rush</option>
                     <option value="itp-normal" selected>Normal</option>
-                    <option value="itp-low">Low</option>
+                    <option value="itp-low">Low (Lowest)</option>
                 </select>
                 <span class="help-inline">Priority of task</span>
             </div>
@@ -158,7 +158,7 @@
             <label class="control-label">Task Description</label>
             <div class="controls">
                 <input id="itaskDesc" type="text" />
-                <span class="help-inline">(Optional) Details of task</span>
+                <span class="help-inline">(Optional) Attaching resources of task</span>
             </div>
         </div>
         <div class="form-actions">
@@ -179,7 +179,7 @@
 			<div class="span4">
 
 <!-- Today Todo List -->
-<div class="well height2">
+<div class="well height2 autooverflow">
     todo list
 </div>
 <!-- /Today Todo List -->
