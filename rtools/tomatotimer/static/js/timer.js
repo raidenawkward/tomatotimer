@@ -511,6 +511,15 @@ function initActivityInventoryListView() {
 function appendToActivityInventoryListView(task) {
 	console.log("appendToActivityInventoryListView: " + task);
 
+    if (typeof(task) == "number") {
+        var id = task;
+        for (_i = todoTaskList.length; _i >= 0; _i--) {
+            if (todoTaskList[_i].id == id) {
+                task = todoTaskList[_i];
+            }
+        }
+    }
+
     var _html = '';
     _html += '<tr id="task-' +task.id+ '">';
     _html += '<td>' +task.title+ '</td>';
