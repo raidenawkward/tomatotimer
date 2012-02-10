@@ -110,8 +110,8 @@
 <div class="well height1 autooverflow">
     <div id="activityInventoryListView">
         <!-- Activity Inventory List View -->
-        <h3 id="activityInventoryTitle" class="span2">Activity Inventory</h3>
-        <a id="appendTaskIcon" class="btn btn-primary offset3" href="#"><i class="icon-plus-sign icon-white"></i> New Task</a>
+        <h3 id="activityInventoryTitle" class="span3">Activity Inventory</h3>
+        <a id="appendTaskIcon" class="btn btn-primary offset2" href="#"><i class="icon-plus-sign icon-white"></i> New Task</a>
         <table class="table table-striped">
             <thead>
                 <th class="span3">Task</th>
@@ -124,7 +124,7 @@
                 <tr id="task-{task.id}">
                     <td><i class="icon-remove-sign" onclick="removeTaskFromActivityInventoryListView({task.id});"></i>{task.title}</td>
                     <td><span class="label label-important">priority</span></td>';
-                    <td><a class="btn" href="#">Add TODO <i class="icon-chevron-right"></i></a></td>
+                    <td><a id="addToTodoList" class="btn" href="#">Add TODO <i class="icon-chevron-right"></i></a></td>
                 </tr>
                 -->
             </tbody>
@@ -180,7 +180,28 @@
 
 <!-- Today Todo List -->
 <div class="well height2 autooverflow">
-    todo list
+    <h3 class="span2">Today's TODO</h3>
+    <table class="table table-striped">
+        <thead>
+            <th></th>
+            <th></th>
+        </thead>
+        <tbody id="todoList">
+            <!-- todoList dom handled by javascript -->
+            <!-- HTML code example
+            <tr>
+                <td>
+                    <i class="icon-chevron-left"></i>
+                    <span class="label label-important">Task.Priority.Shortcut</span>
+                    <span>Task.title</span>
+                </td>
+                <td>
+                    <i class="icon-remove-sign"></i>
+                </td>
+            </tr>
+            -->
+        </tbody>
+    </table>
 </div>
 <!-- /Today Todo List -->
 

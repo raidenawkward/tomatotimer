@@ -3,7 +3,7 @@ $(document).ready(function(){
     //
     // var origin
     //
-    o_task = {id: '', title: '', desc: '', priority: ''};
+    window.o_task = {id: '', title: '', desc: '', priority: ''};
 
     //
     // VAR INIT
@@ -14,17 +14,23 @@ $(document).ready(function(){
     var INIT_TASK_ID = 0;
     var LAST_TASK_DESC = "timout:last_task_desc";
     var LAST_TASK_START_TIME = "timout:last_task_start_time";
-    PRIORITY2STYLE = {
+    window.PRIORITY2STYLE = {
         'itp-critical': 'label-important',
         'itp-rush':     'label-warning',
         'itp-normal':   'label-info',
         'itp-low':      'label-seccess',
     };
-    PRIORITY2TEXT = {
+    window.PRIORITY2TEXT = {
         'itp-critical': 'Critical',
         'itp-rush':     'Rush',
         'itp-normal':   'Normal',
         'itp-low':      'Low',
+    };
+    window.PRIORITY2STEXT = {
+        'itp-critical': 'C',
+        'itp-rush':     'R',
+        'itp-normal':   'N',
+        'itp-low':      'L',
     };
 
 //	var currentTaskTitle = 'Task';
@@ -38,8 +44,8 @@ $(document).ready(function(){
 	var timeout = null;
     var last_task_id = INIT_TASK_ID;
 
-    aiTaskList = new Array();
-    todoTaskList = new Array();
+    window.aiTaskList = new Array();
+    window.todoTaskList = new Array();
 
 
 	var timers = [
@@ -505,11 +511,11 @@ function initActivityInventoryListView() {
 function appendToActivityInventoryListView(task) {
 	console.log("appendToActivityInventoryListView: " + task);
 
-    _html = '';
-    _html = '<tr id="task-' +task.id+ '">';
+    var _html = '';
+    _html += '<tr id="task-' +task.id+ '">';
     _html += '<td><i class="icon-remove-sign" onclick="removeTaskFromActivityInventoryListView(' +task.id+ ');"></i> ' +task.title+ '</td>';
     _html += '<td><span class="label ' +PRIORITY2STYLE[task.priority]+'">' +PRIORITY2TEXT[task.priority]+ '</span></td>';
-    _html += '<td><a class="btn" href="#">Add TODO <i class="icon-chevron-right"></i></a></td>';
+    _html += '<td><a class="btn" href="#" onclick="appendToTodoListView(' +task.id+ ')">Add TODO <i class="icon-chevron-right"></i></a></td>';
     _html += '</tr>';
     $('#aiList').prepend(_html);
 }
@@ -520,6 +526,59 @@ function removeTaskFromActivityInventoryListView(id) {
     for (_i = aiTaskList.length-1; _i >= 0; _i--) {
         if (aiTaskList[_i].id == id) {
             aiTaskList.splice(_i, 1);
+            $('#task-' + id).remove();
+            break;
+        }
+    }
+}
+
+//
+// Today's TODO List Operation
+//
+function initTodoListView() {
+    console.log("initTodoListView");
+
+    for (_i = todoTaskList.length - 1; _i >= 0; _i--) {
+        var _task = todoTaskList[_i];
+        appendToTodoListView(_task.id);
+    }
+}
+    
+function appendToTodoListView(id) {
+	console.log("appendToTodoListView: " + id);
+
+    for (_i = aiTaskList.length-1; _i >= 0; _i--) {
+        if (aiTaskList[_i].id == id) {
+            var _task = aiTaskList[_i];
+            
+            todoTaskList[todoTaskList.length] = _task;
+
+            removeTaskFromActivityInventoryListView(id);
+
+            var _html = '';
+            _html += '<tr id="task-' +_task.id+ '">';
+            _html += '<td>';
+            _html += '<i class="icon-chevron-left"></i> ';
+            _html += '<span class="label ' +PRIORITY2STYLE[_task.priority]+ '">' +PRIORITY2STEXT[_task.priority]+ '</span> ';
+            _html += '<span>' +_task.title+ '</span> ';
+            _html += '</td>';
+            _html += '<td>';
+            _html += '<i class="icon-remove-sign" onclick="removeTaskFromTodoListView(' +_task.id+ ');"></i>';
+            _html += '</td>';
+            _html += '</tr>';
+            $('#todoList').prepend(_html);
+
+            break;
+        }
+    }
+}
+
+function removeTaskFromTodoListView(id) {
+    console.log("removeTaskFromTodoListView");
+
+    for (_i = todoTaskList.length-1; _i >= 0; _i--) {
+        if (todoTaskList[_i].id == id) {
+            todoTaskList.splice(_i, 1);
             $('#task-' + id).remove();
             break;
         }
