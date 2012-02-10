@@ -385,6 +385,9 @@ $(document).ready(function(){
 		console.log("Clicked #cancelAppendTask");
 
         initAIGroup('activityInventoryListView');
+
+        // reset form
+        $('#appendTaskForm')[0].reset();
     });
     
 	$('#appendTask').click(function(event){
@@ -403,6 +406,9 @@ $(document).ready(function(){
         appendToActivityInventoryListView(_task);
 
         initAIGroup('activityInventoryListView');
+
+        // reset form
+        $('#appendTaskForm')[0].reset();
     });
     
 	$('#appendTaskIcon').click(function(event){
