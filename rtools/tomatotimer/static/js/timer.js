@@ -18,7 +18,7 @@ $(document).ready(function(){
         'itp-critical': 'label-important',
         'itp-rush':     'label-warning',
         'itp-normal':   'label-info',
-        'itp-low':      'label-seccess',
+        'itp-low':      '',
     };
     window.PRIORITY2TEXT = {
         'itp-critical': 'Critical',
@@ -513,9 +513,21 @@ function appendToActivityInventoryListView(task) {
 
     var _html = '';
     _html += '<tr id="task-' +task.id+ '">';
-    _html += '<td><i class="icon-remove-sign" onclick="removeTaskFromActivityInventoryListView(' +task.id+ ');"></i> ' +task.title+ '</td>';
+    _html += '<td>' +task.title+ '</td>';
     _html += '<td><span class="label ' +PRIORITY2STYLE[task.priority]+'">' +PRIORITY2TEXT[task.priority]+ '</span></td>';
-    _html += '<td><a class="btn" href="#" onclick="appendToTodoListView(' +task.id+ ')">Add TODO <i class="icon-chevron-right"></i></a></td>';
+    _html += '<td><a href="#" class="btn btn-danger" onclick="removeTaskFromActivityInventoryListView(' +task.id+ ');"><i class="icon-remove-sign icon-white"></i> Remove</a> <a class="btn btn-info" href="#" onclick="appendToTodoListView(' +task.id+ ')">Add TODO <i class="icon-chevron-right icon-white"></i></a></td>';
+    _html += '</tr>';
+    $('#aiList').prepend(_html);
+}
+
+function appendToActivityInventoryListView(task) {
+	console.log("appendToActivityInventoryListView: " + task);
+
+    var _html = '';
+    _html += '<tr id="task-' +task.id+ '">';
+    _html += '<td>' +task.title+ '</td>';
+    _html += '<td><span class="label ' +PRIORITY2STYLE[task.priority]+'">' +PRIORITY2TEXT[task.priority]+ '</span></td>';
+    _html += '<td><a href="#" class="btn btn-danger" onclick="removeTaskFromActivityInventoryListView(' +task.id+ ');"><i class="icon-remove-sign icon-white"></i> Remove</a> <a class="btn btn-info" href="#" onclick="appendToTodoListView(' +task.id+ ')">Add TODO <i class="icon-chevron-right icon-white"></i></a></td>';
     _html += '</tr>';
     $('#aiList').prepend(_html);
 }
@@ -538,10 +550,12 @@ function removeTaskFromActivityInventoryListView(id) {
 function initTodoListView() {
     console.log("initTodoListView");
 
+/*
     for (_i = todoTaskList.length - 1; _i >= 0; _i--) {
         var _task = todoTaskList[_i];
         appendToTodoListView(_task.id);
     }
+*/
 }
     
 function appendToTodoListView(id) {
@@ -558,12 +572,13 @@ function appendToTodoListView(id) {
             var _html = '';
             _html += '<tr id="task-' +_task.id+ '">';
             _html += '<td>';
-            _html += '<i class="icon-chevron-left"></i> ';
-            _html += '<span class="label ' +PRIORITY2STYLE[_task.priority]+ '">' +PRIORITY2STEXT[_task.priority]+ '</span> ';
+            _html += '<i class="icon-chevron-right"></i> <span class="label ' +PRIORITY2STYLE[_task.priority]+ '">' +PRIORITY2STEXT[_task.priority]+ '</span> ';
             _html += '<span>' +_task.title+ '</span> ';
-            _html += '</td>';
-            _html += '<td>';
-            _html += '<i class="icon-remove-sign" onclick="removeTaskFromTodoListView(' +_task.id+ ');"></i>';
+            _html += '<span class="pull-right">';
+            _html += '<span class="label label-success">DO IT!!!</span> ';
+            _html += '<span class="label label-info">BACK</span> ';
+            _html += '<span class="label label-important" onclick="removeTaskFromTodoListView(' +_task.id+ ');">REMOVE</span>';
+            _html += '</span>';
             _html += '</td>';
             _html += '</tr>';
             $('#todoList').prepend(_html);
@@ -580,6 +595,21 @@ function removeTaskFromTodoListView(id) {
         if (todoTaskList[_i].id == id) {
             todoTaskList.splice(_i, 1);
             $('#task-' + id).remove();
+            break;
+        }
+    }
+}
+
+function backToActivityInventoryListView(id) {
+    console.log("backToActivityInventoryListView: " + id);
+
+    for (_i = todoTaskList.length-1; _i >= 0; _i--) {
+        if (todoTaskList[_i].id == id) {
+            var _task = todoTaskList[_i];
+
+            todoTaskList.splice(_i, 1);
+            $('#task-' + id).remove();
+
             break;
         }
     }
