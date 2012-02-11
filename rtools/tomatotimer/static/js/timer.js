@@ -46,6 +46,7 @@ $(document).ready(function(){
 
     window.aiTaskList = new Array();
     window.todoTaskList = new Array();
+    window.last_task = null;
 
 
 	var timers = [
@@ -584,8 +585,8 @@ function appendToTodoListView(id) {
             _html += '<i class="icon-chevron-right"></i> <span class="label ' +PRIORITY2STYLE[_task.priority]+ '">' +PRIORITY2STEXT[_task.priority]+ '</span> ';
             _html += '<span>' +_task.title+ '</span> ';
             _html += '<span class="pull-right">';
-            _html += '<span class="label label-success">DO IT!!!</span> ';
-            _html += '<span class="label label-info">BACK</span> ';
+            _html += '<span class="label label-success" onclick="doTask(' +_task.id+ ');">DO IT!!!</span> ';
+            _html += '<span class="label label-info" onclick="backToActivityInventoryListView(' +_task.id+ ');">BACK</span> ';
             _html += '<span class="label label-important" onclick="removeTaskFromTodoListView(' +_task.id+ ');">REMOVE</span>';
             _html += '</span>';
             _html += '</td>';
@@ -619,7 +620,31 @@ function backToActivityInventoryListView(id) {
             todoTaskList.splice(_i, 1);
             $('#task-' + id).remove();
 
+            appendToActivityInventoryListView(_task);
+            aiTaskList[aiTaskList.length] = _task;
+
             break;
         }
     }
+}
+
+function doTask(id) {
+    console.log("doTask: " + id);
+
+    for (_i = todoTaskList.length-1; _i >= 0; _i--) {
+        if (todoTaskList[_i].id == id) {
+            var _task = todoTaskList[_i];
+
+            todoTaskList.splice(_i, 1);
+            $('#task-' + id).remove();
+            
+            break;
+        }
+    }
+
+    // Show task detials
+    $('#taskTitle').text(_task.title);
+    $('#taskDesc').text(_task.desc);
+
+    last_task = _task;
 }
