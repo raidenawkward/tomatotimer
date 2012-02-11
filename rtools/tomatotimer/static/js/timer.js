@@ -72,6 +72,10 @@ $(document).ready(function(){
 		"activityInventoryListView", "activityInventoryAppendView"
 	];
 
+    //
+    // PERMISSION
+    //
+
 	// check for notifications support
 	if (window.webkitNotifications) {
 		console.log("Notifications are supported!");
@@ -86,6 +90,22 @@ $(document).ready(function(){
 		console.log("Notifications are not supported for this Browser/OS version yet.");
 		$('#wrong_browser').slideDown("slow");
 	}
+
+	function requestPermission() {
+		reqPerm = window.webkitNotifications.requestPermission(requestPermissionCallback)
+		console.log("Request Permission: " + reqPerm);
+	}
+
+	function requestPermissionCallback() {
+		permission = window.webkitNotifications.checkPermission();
+		console.log("requestPermissionCallback: " + permission);
+		if (permission == 1) {
+			$('#missing_permission').modal('show');
+		} else if ( permission == 2 ) {
+			$('#no_permission').slideDown("slow");
+		}
+	}
+
     
     //
     // INIT EXECUTE
@@ -465,22 +485,6 @@ $(document).ready(function(){
 
 		// set NEVER_ASK_AGAIN
 	});
-
-	function requestPermission() {
-		reqPerm = window.webkitNotifications.requestPermission(requestPermissionCallback)
-		console.log("Request Permission: " + reqPerm);
-	}
-
-	function requestPermissionCallback() {
-		permission = window.webkitNotifications.checkPermission();
-		console.log("requestPermissionCallback: " + permission);
-		if (permission == 1) {
-			$('#missing_permission').modal('show');
-		} else if ( permission == 2 ) {
-			$('#no_permission').slideDown("slow");
-		}
-	}
-
 	//
 	// INIT VALUES
 	//
