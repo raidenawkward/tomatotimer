@@ -1,10 +1,72 @@
 $(document).ready(function(){
 
     //
-    // var origin
+    // TEMPLATE VAR
     //
-    window.o_task = {id: '', title: '', desc: '', priority: ''};
+    window.t_task = {
+        id:         '', 
+        title:      '',
+        desc:       '',
+        priority:   '',
+        startTime:  '',
+        finishTime: '',
+        task_type:  ''
+    };
 
+    //
+    // CONSTANT
+    //
+    window.TASK_TYPE_AI = 'TASK-TYPE-AI';
+    window.TASK_TYPE_TODO = 'TASK-TYPE-TODO';
+
+    window.PRIORITY_2_STYLE = {
+        'ITP-CRITICAL': 'label-important',
+        'ITP-RUSH':     'label-warning',
+        'ITP-NORMAL':   'label-info',
+        'ITP-LOW':      '',
+    };
+    window.PRIORITY_2_TEXT = {
+        'ITP-CRITICAL': 'Critical',
+        'ITP-RUSH':     'Rush',
+        'ITP-NORMAL':   'Normal',
+        'ITP-LOW':      'Low',
+    };
+    window.PRIORITY_2_SHORT_TEXT = {
+        'ITP-CRITICAL': 'C',
+        'ITP-RUSH':     'R',
+        'ITP-NORMAL':   'N',
+        'ITP-LOW':      'L',
+    };
+
+    //
+    // GLOBAL VARS
+    //
+    window.g_task_storage = new Array();
+
+    //
+    // TASK STORAGE OPERATION
+    //
+    window.getTask = function(id) {
+        return jQuery.grep(g_task_storage, function(key, val, id) {
+                return (val.id == id); 
+        })[0];
+    };
+
+    window.addTask = function(task) {
+        g_task_storage[g_task_storage.length] = task;
+    };
+
+    // TODO: remove task from array.
+    window.removeTask = function(id) {
+        $.each(g_task_storage, function(key, val, id) {
+            if (val.id == id) {
+                g_task_storage.splice(key, 1);
+            }
+        });
+    };
+
+});
+/*
     //
     // VAR INIT
     //
@@ -14,24 +76,6 @@ $(document).ready(function(){
     var INIT_TASK_ID = 0;
     var LAST_TASK_DESC = "timout:last_task_desc";
     var LAST_TASK_START_TIME = "timout:last_task_start_time";
-    window.PRIORITY2STYLE = {
-        'itp-critical': 'label-important',
-        'itp-rush':     'label-warning',
-        'itp-normal':   'label-info',
-        'itp-low':      '',
-    };
-    window.PRIORITY2TEXT = {
-        'itp-critical': 'Critical',
-        'itp-rush':     'Rush',
-        'itp-normal':   'Normal',
-        'itp-low':      'Low',
-    };
-    window.PRIORITY2STEXT = {
-        'itp-critical': 'C',
-        'itp-rush':     'R',
-        'itp-normal':   'N',
-        'itp-low':      'L',
-    };
 
 //	var currentTaskTitle = 'Task';
 	var timerStart = null;
@@ -282,7 +326,7 @@ $(document).ready(function(){
 			popup.cancel();
 			popup = null;
 		}
-        */
+        *//*
 	}
 
     // INIT TIMER
@@ -334,7 +378,7 @@ $(document).ready(function(){
 		}
 
 		$('#currentTaskDesc').html(currentTaskDesc);
-*/
+*//*
 
 		initButtonGroup('interruptionButtonGroup');
 
@@ -498,7 +542,7 @@ $(document).ready(function(){
 		$('#pomodoroStart').html(formatTimeDate(pomodoroStart));
 	}
 
-*/
+*//*
 });
 
 //
@@ -569,7 +613,7 @@ function initTodoListView() {
         var _task = todoTaskList[_i];
         appendToTodoListView(_task.id);
     }
-*/
+*//*
 }
     
 function appendToTodoListView(id) {
@@ -652,3 +696,4 @@ function doTask(id) {
 
     last_task = _task;
 }
+*/
