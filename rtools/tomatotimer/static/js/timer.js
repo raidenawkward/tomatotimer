@@ -1,23 +1,13 @@
 $(document).ready(function(){
 
     //
-    // TEMPLATE VAR
-    //
-    window.t_task = {
-        id:         '', 
-        title:      '',
-        desc:       '',
-        priority:   '',
-        startTime:  '',
-        finishTime: '',
-        task_type:  ''
-    };
-
-    //
     // CONSTANT
     //
-    window.TASK_TYPE_AI = 'TASK-TYPE-AI';
-    window.TASK_TYPE_TODO = 'TASK-TYPE-TODO';
+    window.TASK_TYPE = {
+        'UNDEFINED':    'TASK-TYPE-UNDEFINED',
+        'AI':           'TASK-TYPE-AI',
+        'TODO':         'TASK-TYPE-TODO'
+    };
 
     window.PRIORITY_2_STYLE = {
         'ITP-CRITICAL': 'label-important',
@@ -39,6 +29,19 @@ $(document).ready(function(){
     };
 
     //
+    // TEMPLATE VAR
+    //
+    window.t_task = {
+        id:         '', 
+        title:      '',
+        desc:       '',
+        priority:   '',
+        startTime:  '',
+        finishTime: '',
+        taskType:   TASK_TYPE['UNDEFINED']
+    };
+
+    //
     // GLOBAL VARS
     //
     window.g_task_storage = new Array();
@@ -52,17 +55,21 @@ $(document).ready(function(){
         })[0];
     };
 
+    window.getTaskIndex = function(id) {
+        for (var _i=0; _i < g_task_storage.length; _i++) {
+            if (g_task_storage[_i].id == id) {
+                return _i;
+                break;
+            }
+        }
+    };
+
     window.addTask = function(task) {
         g_task_storage[g_task_storage.length] = task;
     };
 
-    // TODO: remove task from array.
     window.removeTask = function(id) {
-        $.each(g_task_storage, function(key, val, id) {
-            if (val.id == id) {
-                g_task_storage.splice(key, 1);
-            }
-        });
+        g_task_storage.splice(getTaskIndex(id), 1);
     };
 
 });
