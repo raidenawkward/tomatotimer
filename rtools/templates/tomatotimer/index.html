@@ -107,31 +107,31 @@
                     <div class="span8">
 
 <!-- Activity Inventory -->
-<div class="well height1 autooverflow">
-    <div id="activityInventoryListView">
+<div class="well height1 autoscroll">
+    <div id="AIListView">
         <!-- Activity Inventory List View -->
-        <h3 id="activityInventoryTitle" class="pull-left">Activity Inventory</h3>
-        <a id="appendTaskIcon" class="btn btn-primary pull-right" href="#"><i class="icon-plus-sign icon-white"></i> New Task</a>
+        <h3 id="AIListViewTitle" class="span3">Activity Inventory</h3>
+        <a id="prependTaskToAIViewBtn" class="btn btn-primary pull-right" href="#"><i class="icon-plus-sign icon-white"></i> New Task</a>
         <table class="table table-striped">
-            <thead>
+            <thead id="AIListViewTableHead">
                 <th class="span3">Task</th>
                 <th class="span2"><span id="aiPriority">Priority</span></th>
                 <th class="span2"></th>
             </thead>
-            <tbody id="aiList">
+            <tbody id="AIListViewTableBody">
                 <!-- aiList dom handled by javascript -->
-                <!-- HTML code example
-                <tr id="task-{task.id}">
-                    <td><i class="icon-remove-sign" onclick="removeTaskFromActivityInventoryListView({task.id});"></i>{task.title}</td>
+                <!-- HTML code example-->
+        
+                <!--tr id="task-{task.id}">
+                    <td><i class="icon-remove-sign" onclick="removeTaskFromAIListView({task.id});"></i>{task.title}</td>
                     <td><span class="label label-important">priority</span></td>';
                     <td><a id="addToTodoList" class="btn" href="#">Add TODO <i class="icon-chevron-right"></i></a></td>
-                </tr>
-                -->
+                </tr-->
             </tbody>
         </table>
         <!-- /Activity Inventory List View -->
     </div>
-    <div id="activityInventoryAppendView" hidden="hidden">
+    <div id="AIAppendView" hidden="hidden">
         <!-- Activity Inventory Append View -->
         <form id="appendTaskForm" class="form-horizontal">
         <fieldset>
@@ -182,10 +182,10 @@
 <div class="well height2 autooverflow">
     <h3 class="pull-left">Today's TODO</h3>
     <table class="table table-striped">
-        <thead>
+        <thead id="todoListViewTableHead">
             <th class="span4"></th>
         </thead>
-        <tbody id="todoList">
+        <tbody id="todoListViewTableBody">
             <!-- todoList dom handled by javascript -->
             <!-- HTML code example
             <tr>

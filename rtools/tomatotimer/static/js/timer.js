@@ -122,16 +122,36 @@ $(document).ready(function(){
     //
     // TASK VIEW
     //
-    window.createTodoNode = function(id) {
-        trace('createTodoNode', {'task-id': id});
+    window.createTodoNode = function(task) {
+        trace('createTodoNode', {'task-id': task.id});
 
-        var _task = getTask(id);
+        var _html = '';
+        _html += '<tr id="task-' +_task.id+ '">';
+        _html += '<td>';
+        _html += '<i class="icon-chevron-right"></i> <span class="label ' +PRIORITY_2_STYLE[_task.priority]+ '">' +PRIORITY_2_SHORT_TEXT[_task.priority]+ '</span> ';
+        _html += '<span>' +_task.title+ '</span> ';
+        _html += '<span class="pull-right">';
+        _html += '<span class="label label-success" onclick="doTask(' +_task.id+ ');">DO IT!!!</span> ';
+        _html += '<span class="label label-info" onclick="backToActivityInventoryListView(' +_task.id+ ');">BACK</span> ';
+        _html += '<span class="label label-important" onclick="removeTaskFromTodoListView(' +_task.id+ ');">REMOVE</span>';
+        _html += '</span>';
+        _html += '</td>';
+        _html += '</tr>';
+
+        $('#todoList').prepend(_html);
     };
 
-    window.createAINode = function(id) {
-        trace('createAINode', {'task-id': id});
+    window.createAINode = function(task) {
+        trace('createAINode', {'task-id': task.id});
 
-        var _task = getTask(id);
+        var _html = '';
+        _html += '<tr id="task-' +task.id+ '">';
+        _html += '<td>' +task.title+ '</td>';
+        _html += '<td><span class="label ' +PRIORITY_2_STYLE[task.priority]+'">' +PRIORITY_2_TEXT[task.priority]+ '</span></td>';
+        _html += '<td><a href="#" class="btn btn-danger" onclick="removeTaskFromActivityInventoryListView(' +task.id+ ');"><i class="icon-remove-sign icon-white"></i> Remove</a> <a class="btn btn-info" href="#" onclick="appendToTodoListView(' +task.id+ ')">Add TODO <i class="icon-chevron-right icon-white"></i></a></td>';
+        _html += '</tr>';
+
+        $('#AIListViewTableBody').prepend(_html);
     };
 
     window.initAIView = function() {
