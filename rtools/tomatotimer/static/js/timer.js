@@ -47,15 +47,34 @@ $(document).ready(function(){
     window.g_task_storage = new Array();
 
     //
-    // TASK STORAGE OPERATION
+    // Utils
+    //
+    window.trace = function(funcName, message) {
+        console.log('>' + funcName + ' starting----');
+            
+        if (typeof(message) != 'undefined') {
+            $.each(message, function(key, val) {
+                console.log('==>' + key + ': ' + val);
+            });
+        }
+            
+        console.log('>' + funcName + ' ending----');
+    };
+
+    //
+    // TASK STORAGE
     //
     window.getTask = function(id) {
+        trace('getTask', {'task-id': id});
+
         return jQuery.grep(g_task_storage, function(key, val, id) {
                 return (val.id == id); 
         })[0];
     };
 
     window.getTaskIndex = function(id) {
+        trace('getTaskIndex', {'task-id': id});
+
         for (var _i=0; _i < g_task_storage.length; _i++) {
             if (g_task_storage[_i].id == id) {
                 return _i;
@@ -65,14 +84,88 @@ $(document).ready(function(){
     };
 
     window.addTask = function(task) {
+        trace('addTask', {'task-id': task.id});
+
         g_task_storage[g_task_storage.length] = task;
     };
 
     window.removeTask = function(id) {
+        trace('removeTask', {'task-id': id});
+
         g_task_storage.splice(getTaskIndex(id), 1);
     };
 
+    window.addToTodo = function(id) {
+        trace('addToTodo', {'task-id': id});
+
+        g_task_storage[getTaskIndex(id)].taskType = TASK_TYPE['TODO'];
+    };
+
+    window.removeFromTodo = function(id) {
+        trace('removeFromTodo', {'task-id': id});
+
+        g_task_storage[getTaskIndex(id)].taskType = TASK_TYPE['UNDEFINED'];
+    };
+
+    window.addToAI = function(id) {
+        trace('addToAI', {'task-id': id});
+
+        g_task_storage[getTaskIndex(id)].taskType = TASK_TYPE['AI'];
+    };
+
+    window.removeFromAI = function(id) {
+        trace('removeFromAI', {'task-id': id});
+
+        g_task_storage[getTaskIndex(id)].taskType = TASK_TYPE['UNDEFINED'];
+    };
+
+    //
+    // TASK VIEW
+    //
+    window.createTodoNode = function(id) {
+        trace('createTodoNode', {'task-id': id});
+
+        var _task = getTask(id);
+    };
+
+    window.createAINode = function(id) {
+        trace('createAINode', {'task-id': id});
+
+        var _task = getTask(id);
+    };
+
+    window.initAIView = function() {
+        trace('initAIView');
+
+    };
+
+    window.initTodoView = function() {
+        trace('initTodoView');
+
+    };
+
+    window.addToAIView = function(id) {
+        trace('addToAIView', {'task-id': id});
+
+    };
+
+    window.removeFromAIView = function(id) {
+        trace('removeFromAIView', {'task-id': id});
+
+    };
+
+    window.addToTodoView = function(id) {
+        trace('addToTodoView', {'task-id': id});
+
+    };
+
+    window.removeFromTodoView = function(id) {
+        trace('removeFromTodoView', {'task-id': id});
+
+    };
+
 });
+
 /*
     //
     // VAR INIT
