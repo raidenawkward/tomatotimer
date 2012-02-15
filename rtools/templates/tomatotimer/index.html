@@ -186,17 +186,6 @@
             <th class="span4"></th>
         </thead>
         <tbody id="todoListViewTableBody">
-            <tr id="task-' +_task.id+ '">
-                <td>
-                    <i class="icon-chevron-right"></i> <span class="label ' +PRIORITY_2_STYLE[_task.priority]+ '">' +PRIORITY_2_SHORT_TEXT[_task.priority]+ '</span>
-                    <span>_task.title</span>
-                    <span class="pull-right">
-                        <span class="label label-success" onclick="doTask(' +_task.id+ ');">DO IT!!!</span>
-                        <span class="label label-info" onclick="backToActivityInventoryListView(' +_task.id+ ');">BACK</span>
-                        <span class="label label-important" onclick="removeTaskFromTodoListView(' +_task.id+ ');">REMOVE</span>
-                    </span>
-                </td>
-            </tr>
             <!-- todoList dom handled by javascript -->
             <!-- HTML code example
             <tr>

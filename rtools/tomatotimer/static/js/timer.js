@@ -62,6 +62,8 @@ $(document).ready(function(){
     };
 
     window.cloneObj = function(obj) {
+        console.log('cloneObj>' + obj);
+
         return $.extend(true, {}, obj);
     };
 
@@ -71,7 +73,7 @@ $(document).ready(function(){
     window.getTask = function(id) {
         trace('getTask', {'task-id': id});
 
-        return $.extend(true, {}, jQuery.grep(g_task_storage, function(key, val, id) {
+        return cloneObj(jQuery.grep(g_task_storage, function(key, val, id) {
                 return (val.id == id); 
         })[0]);
     };
@@ -130,19 +132,19 @@ $(document).ready(function(){
         trace('createTodoNode', {'task-id': task.id});
 
         var _html = '';
-        _html += '<tr id="task-' +_task.id+ '">';
+        _html += '<tr id="task-' +task.id+ '">';
         _html += '<td>';
-        _html += '<i class="icon-chevron-right"></i> <span class="label ' +PRIORITY_2_STYLE[_task.priority]+ '">' +PRIORITY_2_SHORT_TEXT[_task.priority]+ '</span> ';
-        _html += '<span>' +_task.title+ '</span> ';
+        _html += '<i class="icon-chevron-right"></i> <span class="label ' +PRIORITY_2_STYLE[task.priority]+ '">' +PRIORITY_2_SHORT_TEXT[task.priority]+ '</span> ';
+        _html += '<span>' +task.title+ '</span> ';
         _html += '<span class="pull-right">';
-        _html += '<span class="label label-success" onclick="doTask(' +_task.id+ ');">DO IT!!!</span> ';
-        _html += '<span class="label label-info" onclick="backToActivityInventoryListView(' +_task.id+ ');">BACK</span> ';
-        _html += '<span class="label label-important" onclick="removeTaskFromTodoListView(' +_task.id+ ');">REMOVE</span>';
+        _html += '<span class="label label-success" onclick="doTask(' +task.id+ ');">DO IT!!!</span> ';
+        _html += '<span class="label label-info" onclick="backToActivityInventoryListView(' +task.id+ ');">BACK</span> ';
+        _html += '<span class="label label-important" onclick="removeTaskFromTodoListView(' +task.id+ ');">REMOVE</span>';
         _html += '</span>';
         _html += '</td>';
         _html += '</tr>';
 
-        $('#todoList').prepend(_html);
+        $('#todoListViewTableBody').prepend(_html);
     };
 
     window.createAINode = function(task) {
@@ -165,32 +167,47 @@ $(document).ready(function(){
             return val.taskType == TASK_TYPE['AI'];
         });
 
-        console.log(_aiList);
+        $.each(_aiList, function(key, val) {
+            createAINode(val);
+        });
     };
 
     window.initTodoView = function() {
         trace('initTodoView');
 
+        var _todoList = $.grep(g_task_storage, function(val, key) {
+            return val.taskType == TASK_TYPE['TODO'];
+        });
+
+        $.each(_todoList, function(key, val) {
+            createTodoNode(val);
+        });
     };
 
     window.addToAIView = function(id) {
         trace('addToAIView', {'task-id': id});
 
+        var _task = getTask(id);
+        createAINode(_task);
     };
 
     window.removeFromAIView = function(id) {
         trace('removeFromAIView', {'task-id': id});
 
+        $('#task-' + id).remove();
     };
 
     window.addToTodoView = function(id) {
         trace('addToTodoView', {'task-id': id});
 
+        var _task = getTask(id);
+        createTodoNode(_task);
     };
 
     window.removeFromTodoView = function(id) {
         trace('removeFromTodoView', {'task-id': id});
 
+        $('#task-' + id).remove();
     };
 
 });
