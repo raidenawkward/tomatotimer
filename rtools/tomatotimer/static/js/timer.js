@@ -61,15 +61,19 @@ $(document).ready(function(){
         console.log('>' + funcName + ' ending----');
     };
 
+    window.cloneObj = function(obj) {
+        return $.extend(true, {}, obj);
+    };
+
     //
     // TASK STORAGE
     //
     window.getTask = function(id) {
         trace('getTask', {'task-id': id});
 
-        return jQuery.grep(g_task_storage, function(key, val, id) {
+        return $.extend(true, {}, jQuery.grep(g_task_storage, function(key, val, id) {
                 return (val.id == id); 
-        })[0];
+        })[0]);
     };
 
     window.getTaskIndex = function(id) {
@@ -86,7 +90,7 @@ $(document).ready(function(){
     window.addTask = function(task) {
         trace('addTask', {'task-id': task.id});
 
-        g_task_storage[g_task_storage.length] = task;
+        g_task_storage[g_task_storage.length] = cloneObj(task);
     };
 
     window.removeTask = function(id) {
@@ -157,7 +161,7 @@ $(document).ready(function(){
     window.initAIView = function() {
         trace('initAIView');
 
-        var _aiList = $.grep(g_task_storage, function(key, val) {
+        var _aiList = $.grep(g_task_storage, function(val, key) {
             return val.taskType == TASK_TYPE['AI'];
         });
 
