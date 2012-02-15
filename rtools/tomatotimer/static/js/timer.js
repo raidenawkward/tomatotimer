@@ -157,6 +157,11 @@ $(document).ready(function(){
     window.initAIView = function() {
         trace('initAIView');
 
+        var _aiList = $.grep(g_task_storage, function(key, val) {
+            return val.taskType == TASK_TYPE['AI'];
+        });
+
+        console.log(_aiList);
     };
 
     window.initTodoView = function() {
