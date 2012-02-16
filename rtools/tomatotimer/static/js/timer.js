@@ -31,6 +31,9 @@ $(document).ready(function(){
         'ITP-LOW':      'L',
     };
 
+	var AIViewGroups = [
+		"AIListView", "AIAddView"
+	];
     //
     // TEMPLATE VAR
     //
@@ -75,9 +78,11 @@ $(document).ready(function(){
     window.getTask = function(id) {
         trace('getTask', {'task-id': id});
 
-        return cloneObj(jQuery.grep(g_task_storage, function(key, val, id) {
-                return (val.id == id); 
-        })[0]);
+        for (var _i=0; _i < g_task_storage.length; _i++) {
+            if (g_task_storage[_i].id == id) {
+                return cloneObj(g_task_storage[_i]);
+            }
+        }
     };
 
     window.getTaskIndex = function(id) {
@@ -86,7 +91,6 @@ $(document).ready(function(){
         for (var _i=0; _i < g_task_storage.length; _i++) {
             if (g_task_storage[_i].id == id) {
                 return _i;
-                break;
             }
         }
     };
@@ -156,7 +160,7 @@ $(document).ready(function(){
         _html += '<tr id="'+VIEW_TASK_ID_PREFIX+task.id+ '">';
         _html += '<td>' +task.title+ '</td>';
         _html += '<td><span class="label ' +PRIORITY_2_STYLE[task.priority]+'">' +PRIORITY_2_TEXT[task.priority]+ '</span></td>';
-        _html += '<td><a href="#" class="btn btn-danger" onclick="removeTaskFromActivityInventoryListView(' +task.id+ ');"><i class="icon-remove-sign icon-white"></i> Remove</a> <a class="btn btn-info" href="#" onclick="appendToTodoListView(' +task.id+ ')">Add TODO <i class="icon-chevron-right icon-white"></i></a></td>';
+        _html += '<td><a href="#" class="btn btn-danger" onclick="removeFromAIBtn(' +task.id+ ');"><i class="icon-remove-sign icon-white"></i> Remove</a> <a class="btn btn-info" href="#" onclick="addToTodoViewBtn(' +task.id+ ')">Add TODO <i class="icon-chevron-right icon-white"></i></a></td>';
         _html += '</tr>';
 
         $('#AIListViewTableBody').prepend(_html);
@@ -223,8 +227,27 @@ $(document).ready(function(){
     };
 
     //
+    // AI VIEW GROUP
+    //
+    var chAIViewGroup = function(name) {
+        console.log("chAIViewGroup: " + name);
+
+		for (_i = 0, _len = AIViewGroups.length; _i < _len; _i++) {
+			AIViewGroup = AIViewGroups[_i];
+			if (AIViewGroup == name) {
+				$('#' + AIViewGroup).slideDown("slow");
+			} else {
+				$('#' + AIViewGroup).slideUp("slow");
+			}
+		}
+	};
+
+    //
     // EVENT HANDLER
     //
+
+    ///////////////////////////////////
+    // AI View
     $('#addTaskBtn').click(function(event) {
 		event.preventDefault();
 		console.log("Clicked #addTaskBtn");
@@ -236,7 +259,53 @@ $(document).ready(function(){
         _task.desc      = $('#iTaskDesc').val();
 
         addTask(_task);
+        addToAI(_task.id);
+        addToAIView(_task.id);
+
+        // change view
+        chAIViewGroup('AIListView');
+
+        // reset form
+        $('#addTaskForm')[0].reset();
     });
+
+    $('#cancelAddTaskBtn').click(function(event) {
+		event.preventDefault();
+		console.log("Clicked #cancelAddTaskBtn");
+
+        // change view
+        chAIViewGroup('AIListView');
+
+        // reset form
+        $('#addTaskForm')[0].reset();
+    });
+
+    $('#newTaskBtn').click(function(event) {
+		event.preventDefault();
+		console.log("Clicked #newTaskBtn");
+
+        // change view
+        chAIViewGroup('AIAddView');
+    });
+
+    window.removeFromAIBtn = function(id) {
+        trace('removeFromAIBtn');
+
+        removeFromAIView(id);
+        removeTask(id);
+    };
+
+    window.addToTodoViewBtn = function(id) {
+        trace('addToTodoViewBtn');
+
+        removeFromAIView(id);
+        removeFromAI(id);
+        addToTodo(id);
+        addToTodoView(id);
+    };
+
+    ///////////////////////////////////
+    // TODO View
 });
 
 /*
