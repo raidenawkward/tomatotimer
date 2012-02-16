@@ -34,6 +34,11 @@ $(document).ready(function(){
 	var AIViewGroups = [
 		"AIListView", "AIAddView"
 	];
+
+	var buttonGroups = [
+		"startButtonGroup", "interruptionButtonGroup", "breakButtonGroup"
+	];
+
     //
     // TEMPLATE VAR
     //
@@ -51,7 +56,41 @@ $(document).ready(function(){
     // GLOBAL VARS
     //
     window.g_task_storage = new Array();
-    window.g_doing_task = new Object();
+    window.g_current_task = new Object();
+
+    //
+    // PERMISSION
+    //
+
+	// check for notifications support
+	if (window.webkitNotifications) {
+		console.log("Notifications are supported!");
+
+		permission = window.webkitNotifications.checkPermission();
+		console.log("Current permission: " + permission);
+
+		if ( permission == 2 ) {
+			$('#no_permission').slideDown("slow");
+		}
+	} else {
+		console.log("Notifications are not supported for this Browser/OS version yet.");
+		$('#wrong_browser').slideDown("slow");
+	}
+
+	function requestPermission() {
+		reqPerm = window.webkitNotifications.requestPermission(requestPermissionCallback)
+		console.log("Request Permission: " + reqPerm);
+	}
+
+	function requestPermissionCallback() {
+		permission = window.webkitNotifications.checkPermission();
+		console.log("requestPermissionCallback: " + permission);
+		if (permission == 1) {
+			$('#missing_permission').modal('show');
+		} else if ( permission == 2 ) {
+			$('#no_permission').slideDown("slow");
+		}
+	}
 
     //
     // Utils
@@ -237,7 +276,7 @@ $(document).ready(function(){
         $('#doingTaskFinishTime').text('');
 
         // update global doing task var
-        g_doing_task = _task;
+        g_current_task = _task;
     }
 
     //
@@ -389,48 +428,9 @@ $(document).ready(function(){
 //		{ name: "short_break", title: "Short break", time: 1 }
 	];
 
-	var buttonGroups = [
-		"startButtonGroup", "interruptionButtonGroup", "breakButtonGroup"
-	];
-
 	var AIGroups = [
 		"activityInventoryListView", "activityInventoryAppendView"
 	];
-
-    //
-    // PERMISSION
-    //
-
-	// check for notifications support
-	if (window.webkitNotifications) {
-		console.log("Notifications are supported!");
-
-		permission = window.webkitNotifications.checkPermission();
-		console.log("Current permission: " + permission);
-
-		if ( permission == 2 ) {
-			$('#no_permission').slideDown("slow");
-		}
-	} else {
-		console.log("Notifications are not supported for this Browser/OS version yet.");
-		$('#wrong_browser').slideDown("slow");
-	}
-
-	function requestPermission() {
-		reqPerm = window.webkitNotifications.requestPermission(requestPermissionCallback)
-		console.log("Request Permission: " + reqPerm);
-	}
-
-	function requestPermissionCallback() {
-		permission = window.webkitNotifications.checkPermission();
-		console.log("requestPermissionCallback: " + permission);
-		if (permission == 1) {
-			$('#missing_permission').modal('show');
-		} else if ( permission == 2 ) {
-			$('#no_permission').slideDown("slow");
-		}
-	}
-
     
     //
     // INIT EXECUTE
