@@ -38,12 +38,12 @@ $(document).ready(function(){
     // TEMPLATE VAR
     //
     window.t_task = {
-        id:         '', 
-        title:      '',
-        desc:       '',
-        priority:   '',
-        startTime:  '',
-        finishTime: '',
+        id:         null, 
+        title:      'Noname Task',
+        desc:       'Task Description',
+        priority:   'ITP-LOW',
+        startTime:  null,
+        finishTime: null,
         taskType:   TASK_TYPE['UNDEFINED']
     };
 
@@ -51,6 +51,7 @@ $(document).ready(function(){
     // GLOBAL VARS
     //
     window.g_task_storage = new Array();
+    window.g_doing_task = new Object();
 
     //
     // Utils
@@ -143,9 +144,9 @@ $(document).ready(function(){
         _html += '<i class="icon-chevron-right"></i> <span class="label ' +PRIORITY_2_STYLE[task.priority]+ '">' +PRIORITY_2_SHORT_TEXT[task.priority]+ '</span> ';
         _html += '<span>' +task.title+ '</span> ';
         _html += '<span class="pull-right">';
-        _html += '<span class="label label-success" onclick="doTask(' +task.id+ ');">DO IT!!!</span> ';
-        _html += '<span class="label label-info" onclick="backToActivityInventoryListView(' +task.id+ ');">BACK</span> ';
-        _html += '<span class="label label-important" onclick="removeTaskFromTodoListView(' +task.id+ ');">REMOVE</span>';
+        _html += '<span class="label label-success" onclick="doBtn(' +task.id+ ');">DO IT</span> ';
+        _html += '<span class="label label-info" onclick="backToAIViewBtn(' +task.id+ ');">BACK</span> ';
+        _html += '<span class="label label-important" onclick="removeFromTodoBtn(' +task.id+ ');">REMOVE</span>';
         _html += '</span>';
         _html += '</td>';
         _html += '</tr>';
@@ -225,6 +226,19 @@ $(document).ready(function(){
             $('#'+VIEW_TASK_ID_PREFIX  + id).remove();
         }
     };
+
+    window.createDoingNode = function(task) {
+        trace('createDoingNode', {'task-id': task.id});
+
+        var _task = cloneObj(task);
+        $('#doingTaskTitle').text(_task.title);
+        $('#doingTaskDesc').text(_task.desc);
+        $('#doingTaskStartTime').text('');
+        $('#doingTaskFinishTime').text('');
+
+        // update global doing task var
+        g_doing_task = _task;
+    }
 
     //
     // AI VIEW GROUP
@@ -306,6 +320,32 @@ $(document).ready(function(){
 
     ///////////////////////////////////
     // TODO View
+    window.backToAIViewBtn = function(id) {
+        trace('backToAIViewBtn');
+
+        removeFromTodoView(id);
+        removeFromTodo(id);
+        addToAI(id);
+        addToAIView(id);
+    };
+
+    window.removeFromTodoBtn = function(id) {
+        trace('removeFromTodoBtn');
+
+        removeFromTodoView(id);
+        removeTask(id);
+    };
+
+    window.doBtn = function(id) {
+        trace('doBtn');
+
+        var _task = getTask(id);
+
+        removeFromTodoView(id);
+        removeTask(id);
+
+        createDoingNode(_task);
+    };
 });
 
 /*
