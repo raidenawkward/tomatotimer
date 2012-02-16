@@ -3,6 +3,9 @@ $(document).ready(function(){
     //
     // CONSTANT
     //
+    window.VIEW_TASK_ID_PREFIX = 'task-';
+    window.INIT_TASK_ID = 0;
+
     window.TASK_TYPE = {
         'UNDEFINED':    'TASK-TYPE-UNDEFINED',
         'AI':           'TASK-TYPE-AI',
@@ -51,14 +54,13 @@ $(document).ready(function(){
     //
     window.trace = function(funcName, message) {
         console.log('>' + funcName + ' starting----');
+        console.log('>' + funcName + ' paraments:');
             
         if (typeof(message) != 'undefined') {
             $.each(message, function(key, val) {
                 console.log('==>' + key + ': ' + val);
             });
         }
-            
-        console.log('>' + funcName + ' ending----');
     };
 
     window.cloneObj = function(obj) {
@@ -132,7 +134,7 @@ $(document).ready(function(){
         trace('createTodoNode', {'task-id': task.id});
 
         var _html = '';
-        _html += '<tr id="task-' +task.id+ '">';
+        _html += '<tr id="'+VIEW_TASK_ID_PREFIX+task.id+ '">';
         _html += '<td>';
         _html += '<i class="icon-chevron-right"></i> <span class="label ' +PRIORITY_2_STYLE[task.priority]+ '">' +PRIORITY_2_SHORT_TEXT[task.priority]+ '</span> ';
         _html += '<span>' +task.title+ '</span> ';
@@ -151,7 +153,7 @@ $(document).ready(function(){
         trace('createAINode', {'task-id': task.id});
 
         var _html = '';
-        _html += '<tr id="task-' +task.id+ '">';
+        _html += '<tr id="'+VIEW_TASK_ID_PREFIX+task.id+ '">';
         _html += '<td>' +task.title+ '</td>';
         _html += '<td><span class="label ' +PRIORITY_2_STYLE[task.priority]+'">' +PRIORITY_2_TEXT[task.priority]+ '</span></td>';
         _html += '<td><a href="#" class="btn btn-danger" onclick="removeTaskFromActivityInventoryListView(' +task.id+ ');"><i class="icon-remove-sign icon-white"></i> Remove</a> <a class="btn btn-info" href="#" onclick="appendToTodoListView(' +task.id+ ')">Add TODO <i class="icon-chevron-right icon-white"></i></a></td>';
@@ -188,28 +190,53 @@ $(document).ready(function(){
         trace('addToAIView', {'task-id': id});
 
         var _task = getTask(id);
-        createAINode(_task);
+        if (_task.taskType == TASK_TYPE['AI']) {
+            createAINode(_task);   
+        }
     };
 
     window.removeFromAIView = function(id) {
         trace('removeFromAIView', {'task-id': id});
 
-        $('#task-' + id).remove();
+        var _task = getTask(id);
+        if (_task.taskType == TASK_TYPE['AI']) {
+            $('#'+VIEW_TASK_ID_PREFIX + id).remove();
+        }
     };
 
     window.addToTodoView = function(id) {
         trace('addToTodoView', {'task-id': id});
 
         var _task = getTask(id);
-        createTodoNode(_task);
+        if (_task.taskType == TASK_TYPE['TODO']) {
+            createTodoNode(_task);
+        }
     };
 
     window.removeFromTodoView = function(id) {
         trace('removeFromTodoView', {'task-id': id});
 
-        $('#task-' + id).remove();
+        var _task = getTask(id);
+        if (_task.taskType == TASK_TYPE['TODO']) {
+            $('#'+VIEW_TASK_ID_PREFIX  + id).remove();
+        }
     };
 
+    //
+    // EVENT HANDLER
+    //
+    $('#addTaskBtn').click(function(event) {
+		event.preventDefault();
+		console.log("Clicked #addTaskBtn");
+
+        var _task = cloneObj(t_task);
+        _task.id        = INIT_TASK_ID; INIT_TASK_ID++;
+        _task.title     = $('#iTaskTitle').val();
+        _task.priority  = $('#iTaskPriority').val();
+        _task.desc      = $('#iTaskDesc').val();
+
+        addTask(_task);
+    });
 });
 
 /*
@@ -219,7 +246,6 @@ $(document).ready(function(){
 
 	var POPUP_CANCEL_TIMEOUT = -1;
 	var DEFAULT_TASK_DESC = '[nameless tomatotimer task]';
-    var INIT_TASK_ID = 0;
     var LAST_TASK_DESC = "timout:last_task_desc";
     var LAST_TASK_START_TIME = "timout:last_task_start_time";
 
