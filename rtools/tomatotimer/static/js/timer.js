@@ -58,13 +58,13 @@ $(document).ready(function(){
     // TEMPLATE VAR
     //
     window.t_task = {
-        id:         null, 
-        title:      'Noname Task',
-        desc:       'Task Description',
-        priority:   'ITP-LOW',
-        startTime:  null,
-        finishTime: null,
-        taskType:   TASK_TYPE['UNDEFINED']
+        id:             null, 
+        title:          'Noname Task',
+        desc:           'Task Description',
+        priority:       'ITP-LOW',
+        tomato:         0,
+        interrupution:  0,
+        taskType:       TASK_TYPE['UNDEFINED']
     };
 
     //
