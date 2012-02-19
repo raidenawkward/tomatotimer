@@ -287,28 +287,18 @@ $(document).ready(function(){
         trace('createCurrentNode', {'task-id': task.id});
 
         var _task = cloneObj(task);
-        $('#doingTaskTitle').text(_task.title);
-        $('#doingTaskDesc').text(_task.desc);
-        $('#doingTaskStartTime').text('');
-        $('#doingTaskFinishTime').text('');
+        $('#currentTaskTitle').text(_task.title);
+        $('#currentTaskDesc').text(_task.desc);
+        $('#currentTaskStartTime').text('');
+        $('#cuttentTaskFinishTime').text('');
 
-        // update global doing task var
+        // update global cuttent task var
         g_current_task = _task;
     };
 
     //
     // TIMER
     //
-    
-    var addTickAudio = function() {
-        var _tick_audio = '<audio id="tickAudio" src="/static/snd/tick.wav" loop="loop" preload="auto" autoplay="autoplay"></audio>';
-
-        $('#tickAudioContainer').append(_tick_audio);
-    };
-
-    var removeTickAudio = function() {
-        $('#tickAudio').remove();
-    };
 
     var initTimer = function(name) {
         trace('initTimer', {'name': name});
@@ -331,7 +321,6 @@ $(document).ready(function(){
 		finalTaskMillis = timerStart.getTime() + (timer.time * 1000)
 		console.log("finalTaskMillis: " + finalTaskMillis + " => " + (new Date (finalTaskMillis)));
 
-        addTickAudio();
 		timeout = setTimeout("onTick()", 1000);
 	};
 
@@ -373,7 +362,6 @@ $(document).ready(function(){
 
 		finalTaskMillis = -1;
 
-        removeTickAudio();
 		timerFinish = new Date();
 		if ( timerName == 'tomato' ) {
             initButtonGroup('breakButtonGroup');
@@ -595,7 +583,6 @@ $(document).ready(function(){
 		event.preventDefault();
 		trace('timeInterrupt');
 
-        removeTickAudio();
 		now = new Date();
 		console.log("now: " + now);
 		if ( timerName == 'tomato' ) {
