@@ -9,6 +9,8 @@ urlpatterns = patterns('tomatotimer.views',
     # Chrome Notification
     url(r'^chrome/popup-tomato/$', 'chrome_popup_tomato'),
     url(r'^chrome/popup-break/$', 'chrome_popup_break'),
+    # Task Operation
+    url(r'^task/get/all/$', 'task_get_all'),
 )
 
 # for staticfiles
