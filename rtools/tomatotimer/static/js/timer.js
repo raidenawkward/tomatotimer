@@ -625,4 +625,27 @@ $(document).ready(function(){
 		initTimer('long_break');
 	});
 
+    window.init = function() {
+        trace('init');
+
+        $.get('/tomatotimer/task/get/all/', function(data){
+            var _d = eval(data);
+
+            $.each(_d, function(k, v) {
+                var _task = cloneObj(t_task);
+                _task.id = v.pk;
+                _task.title = v.fields.title;
+                _task.desc = v.fields.desc;
+                _task.priority = v.fields.priority;
+                _task.taskType = v.fields.taskType;
+
+                addTask(_task);
+            });
+        });
+
+        initAIView();
+        initTodoView();
+    };
+    // init application
+    init();
 });

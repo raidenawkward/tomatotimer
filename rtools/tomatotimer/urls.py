@@ -11,6 +11,7 @@ urlpatterns = patterns('tomatotimer.views',
     url(r'^chrome/popup-break/$', 'chrome_popup_break'),
     # Task Operation
     url(r'^task/get/all/$', 'task_get_all'),
+    url(r'^task/get/(\d+)/$', 'task_get'),
 )
 
 # for staticfiles

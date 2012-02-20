@@ -28,17 +28,34 @@ def chrome_popup_break(request):
 
 # Task Operation
 def task_add(request):
+    if request.method == 'POST':
+        _task = Task(
+                title =     request.POST['title'],
+                desc =      request.POST['desc'],
+                priority =  request.POST['priority'],
+                taskType =  request.POST['taskType'],
+        )
+
+        data = _task.save();
+
+    return HttpResponse(data);
+
+def task_modify(request, task_id):
     pass
 
-def task_modify(request):
+def task_delete(request, task_id):
     pass
 
-def task_delete(request):
-    pass
-
-def task_get(request):
-    pass
+def task_get(request, task_id):
+    return HttpResponse(
+        serializers.serialize(
+            FORMAT['json'],
+            Task.objects.filter(pk=task_id)),
+    MIME['json'])
 
 def task_get_all(request):
-    data = serializers.serialize(FORMAT['json'], Task.objects.all())
-    return HttpResponse(data, MIME['json'])
+    return HttpResponse(
+        serializers.serialize(
+            FORMAT['json'],
+            Task.objects.all()),
+    MIME['json'])
