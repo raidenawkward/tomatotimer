@@ -233,6 +233,7 @@ $(document).ready(function(){
         $.each(_aiList, function(key, val) {
             createAINode(val);
         });
+
     };
 
     window.initTodoView = function() {
@@ -628,10 +629,9 @@ $(document).ready(function(){
     window.init = function() {
         trace('init');
 
-        $.get('/tomatotimer/task/get/all/', function(data){
-            var _d = eval(data);
+        $.getJSON('/tomatotimer/task/get/all/', function(data){
 
-            $.each(_d, function(k, v) {
+            $.each(data, function(k, v) {
                 var _task = cloneObj(t_task);
                 _task.id = v.pk;
                 _task.title = v.fields.title;
@@ -641,10 +641,10 @@ $(document).ready(function(){
 
                 addTask(_task);
             });
-        });
 
-        initAIView();
-        initTodoView();
+            initAIView();
+            initTodoView();
+        });
     };
     // init application
     init();

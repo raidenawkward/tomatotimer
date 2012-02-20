@@ -30,13 +30,12 @@ def chrome_popup_break(request):
 def task_add(request):
     if request.method == 'POST':
         _task = Task(
-                title =     request.POST['title'],
-                desc =      request.POST['desc'],
-                priority =  request.POST['priority'],
-                taskType =  request.POST['taskType'],
+                title = request.POST['title'],
+                desc = request.POST['desc'],
+                priority = request.POST['priority'],
+                taskType = request.POST['taskType'],
         )
-
-        data = _task.save();
+        _task.save();
 
     return HttpResponse(data);
 
