@@ -4,7 +4,6 @@ TODO LIST
 v0.3x
 
  - v0.31 服务端可以保存Task
- - v0.32 增强task信息，便于效率统计
 
 v0.2x
 
