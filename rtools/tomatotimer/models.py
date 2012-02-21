@@ -21,3 +21,8 @@ class Task(models.Model):
 
     def __unicode__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        super(Task, self).save(*args, **kwargs)
+        # return saved task id
+        return self.id

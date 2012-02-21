@@ -12,6 +12,7 @@ urlpatterns = patterns('tomatotimer.views',
     # Task Operation
     url(r'^task/get/all/$', 'task_get_all'),
     url(r'^task/get/(\d+)/$', 'task_get'),
+    url(r'^task/add/$', 'task_add'),
 )
 
 # for staticfiles

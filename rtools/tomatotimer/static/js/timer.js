@@ -130,6 +130,28 @@ $(document).ready(function(){
     };
 
     //
+    // AJAX REQUEST
+    //
+    window.ajaxAddTask = function(task) {
+        window.newid = null;
+
+        $.ajaxSettings.async = false;
+        $.getJSON('/tomatotimer/task/add/',
+            {
+                'title': task.title,
+                'desc': task.desc,
+                'priority': task.priority,
+                'taskType': task.taskType
+            },
+            function(data) {
+                newid = data;
+        });
+        $.ajaxSettings.async = true;
+
+        return newid;
+    };
+
+    //
     // TASK STORAGE
     //
     window.getTask = function(id) {
@@ -474,14 +496,14 @@ $(document).ready(function(){
 		console.log("Clicked #addTaskBtn");
 
         var _task = cloneObj(t_task);
-        _task.id        = INIT_TASK_ID; INIT_TASK_ID++;
         _task.title     = $('#iTaskTitle').val();
         _task.priority  = $('#iTaskPriority').val();
         _task.desc      = $('#iTaskDesc').val();
+        _task.id        = ajaxAddTask(_task); // add to server
 
         addTask(_task);
-        addToAI(_task.id);
-        addToAIView(_task.id);
+        addToAI(_task.id); // change taskType
+        addToAIView(_task.id); // show
 
         // change view
         chAIViewGroup('AIListView');

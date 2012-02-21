@@ -28,16 +28,14 @@ def chrome_popup_break(request):
 
 # Task Operation
 def task_add(request):
-    if request.method == 'POST':
-        _task = Task(
-                title = request.POST['title'],
-                desc = request.POST['desc'],
-                priority = request.POST['priority'],
-                taskType = request.POST['taskType'],
-        )
-        _task.save();
+    _task = Task(
+            title = request.GET['title'],
+            desc = request.GET['desc'],
+            priority = request.GET['priority'],
+            taskType = request.GET['taskType'],
+    )
 
-    return HttpResponse(data);
+    return HttpResponse(_task.save(), MIME['json'])
 
 def task_modify(request, task_id):
     pass
