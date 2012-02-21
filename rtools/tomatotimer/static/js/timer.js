@@ -137,20 +137,22 @@ $(document).ready(function(){
         
         window._newid = null;
 
-        $.ajaxSettings.async = false;
-        $.getJSON('/tomatotimer/task/create/',
-            {
+        $.ajax({
+            async: false,
+            url: '/tomatotimer/task/create/',
+            data: {
                 'title': task.title,
                 'desc': task.desc,
                 'priority': task.priority,
                 'taskType': task.taskType
             },
-            function(data) {
+            dataType: 'json',
+            success: function(data) {
                 console.log(data);
 
                 _newid = data;
+            }
         });
-        $.ajaxSettings.async = true;
 
         task.id = _newid;
         delete _newid;
@@ -159,30 +161,34 @@ $(document).ready(function(){
     window.ajaxTaskUpdate = function(task) {
         trace('ajaxTaskUpdate', {'task-id': task.id});
 
-        $.ajaxSettings.async = false;
-        $.getJSON('/tomatotimer/task/update/' + task.id +'/',
-            {
+        $.ajax({
+            async: false,
+            url: '/tomatotimer/task/update/' + task.id +'/',
+            data: {
                 'title': task.title,
                 'desc': task.desc,
                 'priority': task.priority,
                 'taskType': task.taskType
             },
-            function(data) {
+            dataType: 'json',
+            success: function(data) {
                 console.log(data);
+            }
         });
-        $.ajaxSettings.async = true;
     };
 
     window.ajaxTaskDelete = function(id) {
         trace('ajaxTaskDelete', {'task-id': id});
 
-        $.ajaxSettings.async = false;
-        $.getJSON('/tomatotimer/task/delete/' + id +'/',
-            function(data) {
+        $.ajax({
+            async: false,
+            url: '/tomatotimer/task/delete/' + id +'/',
+            success: function(data) {
                 console.log(data);
+            }
         });
-        $.ajaxSettings.async = true;
     };
+
     //
     // TASK STORAGE
     //

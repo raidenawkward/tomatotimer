@@ -16,8 +16,8 @@ class Task(models.Model):
 
     title = models.CharField(max_length=32)
     desc =  models.CharField(max_length=128)
-    priority =  models.CharField(max_length=16, choices=PRIORITY_CHOICES)
-    taskType =  models.CharField(max_length=16, choices=TASK_TYPE_CHOICES)
+    priority =  models.CharField(max_length=32, choices=PRIORITY_CHOICES)
+    taskType =  models.CharField(max_length=32, choices=TASK_TYPE_CHOICES)
 
     def __unicode__(self):
         return self.title
