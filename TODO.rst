@@ -4,6 +4,8 @@ TODO LIST
 v0.3x
 
  - v0.31 服务端可以保存Task
+ - v0.32 demo服务器调试
+ - v0.33 修补xss漏洞
 
 v0.2x
 
