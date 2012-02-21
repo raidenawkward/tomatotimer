@@ -132,11 +132,13 @@ $(document).ready(function(){
     //
     // AJAX REQUEST
     //
-    window.ajaxAddTask = function(task) {
-        window.newid = null;
+    window.ajaxTaskCreate = function(task) {
+        trace('ajaxTaskCreate');
+        
+        window._newid = null;
 
         $.ajaxSettings.async = false;
-        $.getJSON('/tomatotimer/task/add/',
+        $.getJSON('/tomatotimer/task/create/',
             {
                 'title': task.title,
                 'desc': task.desc,
@@ -144,13 +146,43 @@ $(document).ready(function(){
                 'taskType': task.taskType
             },
             function(data) {
-                newid = data;
+                console.log(data);
+
+                _newid = data;
         });
         $.ajaxSettings.async = true;
 
-        return newid;
+        task.id = _newid;
+        delete _newid;
     };
 
+    window.ajaxTaskUpdate = function(task) {
+        trace('ajaxTaskUpdate', {'task-id': task.id});
+
+        $.ajaxSettings.async = false;
+        $.getJSON('/tomatotimer/task/update/' + task.id +'/',
+            {
+                'title': task.title,
+                'desc': task.desc,
+                'priority': task.priority,
+                'taskType': task.taskType
+            },
+            function(data) {
+                console.log(data);
+        });
+        $.ajaxSettings.async = true;
+    };
+
+    window.ajaxTaskDelete = function(id) {
+        trace('ajaxTaskDelete', {'task-id': id});
+
+        $.ajaxSettings.async = false;
+        $.getJSON('/tomatotimer/task/delete/' + id +'/',
+            function(data) {
+                console.log(data);
+        });
+        $.ajaxSettings.async = true;
+    };
     //
     // TASK STORAGE
     //
@@ -184,30 +216,40 @@ $(document).ready(function(){
         trace('removeTask', {'task-id': id});
 
         g_task_storage.splice(getTaskIndex(id), 1);
+        // update server data
+        ajaxTaskDelete(id);
     };
 
     window.addToTodo = function(id) {
         trace('addToTodo', {'task-id': id});
 
         g_task_storage[getTaskIndex(id)].taskType = TASK_TYPE['TODO'];
+        // update server data
+        ajaxTaskUpdate(getTask(id));
     };
 
     window.removeFromTodo = function(id) {
         trace('removeFromTodo', {'task-id': id});
 
         g_task_storage[getTaskIndex(id)].taskType = TASK_TYPE['UNDEFINED'];
+        // update server data
+        ajaxTaskUpdate(getTask(id));
     };
 
     window.addToAI = function(id) {
         trace('addToAI', {'task-id': id});
 
         g_task_storage[getTaskIndex(id)].taskType = TASK_TYPE['AI'];
+        // update server data
+        ajaxTaskUpdate(getTask(id));
     };
 
     window.removeFromAI = function(id) {
         trace('removeFromAI', {'task-id': id});
 
         g_task_storage[getTaskIndex(id)].taskType = TASK_TYPE['UNDEFINED'];
+        // update server data
+        ajaxTaskUpdate(getTask(id));
     };
 
     //
@@ -499,7 +541,7 @@ $(document).ready(function(){
         _task.title     = $('#iTaskTitle').val();
         _task.priority  = $('#iTaskPriority').val();
         _task.desc      = $('#iTaskDesc').val();
-        _task.id        = ajaxAddTask(_task); // add to server
+        ajaxTaskCreate(_task); // add to server
 
         addTask(_task);
         addToAI(_task.id); // change taskType
@@ -651,7 +693,7 @@ $(document).ready(function(){
     window.init = function() {
         trace('init');
 
-        $.getJSON('/tomatotimer/task/get/all/', function(data){
+        $.getJSON('/tomatotimer/task/read/all/', function(data){
 
             $.each(data, function(k, v) {
                 var _task = cloneObj(t_task);

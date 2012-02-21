@@ -27,7 +27,7 @@ def chrome_popup_break(request):
     return render_to_response('tomatotimer/chrome/popup-break.html')
 
 # Task Operation
-def task_add(request):
+def task_create(request):
     _task = Task(
             title = request.GET['title'],
             desc = request.GET['desc'],
@@ -37,20 +37,31 @@ def task_add(request):
 
     return HttpResponse(_task.save(), MIME['json'])
 
-def task_modify(request, task_id):
-    pass
+def task_update(request, task_id):
+    _task = Task(
+            title = request.GET['title'],
+            desc = request.GET['desc'],
+            priority = request.GET['priority'],
+            taskType = request.GET['taskType'],
+    )
+    _task.id = task_id
+
+    return HttpResponse(_task.save(), MIME['json'])
 
 def task_delete(request, task_id):
-    pass
+    _task = Task()
+    _task.id = task_id
 
-def task_get(request, task_id):
+    return HttpResponse(_task.delete(), MIME['json'])
+
+def task_read(request, task_id):
     return HttpResponse(
         serializers.serialize(
             FORMAT['json'],
             Task.objects.filter(pk=task_id)),
     MIME['json'])
 
-def task_get_all(request):
+def task_read_all(request):
     return HttpResponse(
         serializers.serialize(
             FORMAT['json'],

@@ -26,3 +26,8 @@ class Task(models.Model):
         super(Task, self).save(*args, **kwargs)
         # return saved task id
         return self.id
+
+    def delete(self, *args, **kwargs):
+        super(Task, self).delete(*args, **kwargs)
+        # return saved task id
+        return self.id
