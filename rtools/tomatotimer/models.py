@@ -9,9 +9,9 @@ class Task(models.Model):
         (u'ITP-LOW',        u'ITP-LOW'),
     )
     TASK_TYPE_CHOICES = (
-        ('TASK-TYPE-UNDEFINED', 'TASK-TYPE-UNDEFINED'),
-        ('TASK-TYPE-AI',        'TASK-TYPE-AI'),
-        ('TASK-TYPE-TODO',      'TASK-TYPE-TODO'),
+        (u'TASK-TYPE-UNDEFINED', u'TASK-TYPE-UNDEFINED'),
+        (u'TASK-TYPE-AI',        u'TASK-TYPE-AI'),
+        (u'TASK-TYPE-TODO',      u'TASK-TYPE-TODO'),
     )
 
     title = models.CharField(max_length=32)
@@ -24,10 +24,10 @@ class Task(models.Model):
 
     def save(self, *args, **kwargs):
         super(Task, self).save(*args, **kwargs)
-        # return saved task id
-        return self.id
+        # return saved task
+        return self
 
     def delete(self, *args, **kwargs):
         super(Task, self).delete(*args, **kwargs)
-        # return saved task id
-        return self.id
+        # return saved task
+        return self
