@@ -264,32 +264,70 @@ $(document).ready(function(){
     window.createTodoNode = function(task) {
         trace('createTodoNode', {'task-id': task.id});
 
-        var _html = '';
-        _html += '<tr id="'+VIEW_TASK_ID_PREFIX+task.id+ '">';
-        _html += '<td>';
-        _html += '<i class="icon-chevron-right"></i> <span class="label ' +PRIORITY_2_STYLE[task.priority]+ '">' +PRIORITY_2_SHORT_TEXT[task.priority]+ '</span> ';
-        _html += '<span>' +task.title+ '</span> ';
-        _html += '<span class="pull-right">';
-        _html += '<span class="label label-success" onclick="doBtn(' +task.id+ ');">DO IT</span> ';
-        _html += '<span class="label label-info" onclick="backToAIViewBtn(' +task.id+ ');">BACK</span> ';
-        _html += '<span class="label label-important" onclick="removeFromTodoBtn(' +task.id+ ');">REMOVE</span>';
-        _html += '</span>';
-        _html += '</td>';
-        _html += '</tr>';
+        var _html = $('<tr/>')
+            .attr('id', VIEW_TASK_ID_PREFIX+task.id);
+        var _tmp = null;
+        _tmp = $('<td/>');
 
+        // left side
+        $('<i/>').addClass('icon-chevron-right')
+            .appendTo(_tmp);
+        $('<span/>').addClass('label')
+            .addClass(PRIORITY_2_STYLE[task.priority])
+            .text(PRIORITY_2_SHORT_TEXT[task.priority])
+            .appendTo(_tmp);
+        $('<span/>').text(task.title)
+            .appendTo(_tmp);
+        
+        // right side
+        var _rightSide = $('<span/>')
+            .addClass('pull-right');
+        $('<span/>').addClass('label label-success')
+            .attr('onclick', 'doBtn(' +task.id+ ');')
+            .text('Do IT').appendTo(_rightSide);
+        $('<span/>').addClass('label label-info')
+            .attr('onclick', 'backToAIViewBtn(' +task.id+ ');')
+            .text('BACK').appendTo(_rightSide);
+        $('<span/>').addClass('label label-important')
+            .attr('onclick', 'removeFromTodoBtn(' +task.id+ ');')
+            .text('REMOVE').appendTo(_rightSide);
+
+        _tmp.append(_rightSide);
+        _html.append(_tmp);
+
+        // add node to table
         $('#todoListViewTableBody').prepend(_html);
     };
 
     window.createAINode = function(task) {
         trace('createAINode', {'task-id': task.id});
 
-        var _html = '';
-        _html += '<tr id="'+VIEW_TASK_ID_PREFIX+task.id+ '">';
-        _html += '<td>' +task.title+ '</td>';
-        _html += '<td><span class="label ' +PRIORITY_2_STYLE[task.priority]+'">' +PRIORITY_2_TEXT[task.priority]+ '</span></td>';
-        _html += '<td><a href="#" class="btn btn-danger" onclick="removeFromAIBtn(' +task.id+ ');"><i class="icon-remove-sign icon-white"></i> Remove</a> <a class="btn btn-info" href="#" onclick="addToTodoViewBtn(' +task.id+ ')">Add TODO <i class="icon-chevron-right icon-white"></i></a></td>';
-        _html += '</tr>';
+        var _html = $('<tr/>');
+        _html.attr('id', VIEW_TASK_ID_PREFIX+task.id);
 
+        var _tdCount = 3
+        for (var _i=0; _i < _tdCount; _i++) {
+            _html.append('<td/>');
+        }
+        var _tmp = null;
+        // td 1
+        $('td:nth-child(1)', _html).text(task.title);
+        // td 2
+        _tmp = $('<span/>').addClass('label')
+            .addClass(PRIORITY_2_STYLE[task.priority])
+            .text(PRIORITY_2_TEXT[task.priority]);
+        $('td:nth-child(2)', _html).append(_tmp);
+        // td 3
+        _tmp = $('<span/>').addClass('btn btn-danger')
+            .attr('onclick', 'removeFromAIBtn(' +task.id+ ');')
+            .text('Remove');
+        $('td:nth-child(3)', _html).append(_tmp);
+        _tmp = $('<span/>').addClass('btn btn-info')
+            .attr('onclick', 'addToTodoViewBtn(' +task.id+ ');')
+            .text('Add Todo');
+        $('td:nth-child(3)', _html).append(_tmp);
+        
+        // add node to table
         $('#AIListViewTableBody').prepend(_html);
     };
 
@@ -699,21 +737,22 @@ $(document).ready(function(){
     window.init = function() {
         trace('init');
 
-        $.getJSON('/tomatotimer/task/read/all/', function(data){
-
-            $.each(data, function(k, v) {
-                var _task = cloneObj(t_task);
-                _task.id = v.pk;
-                _task.title = v.fields.title;
-                _task.desc = v.fields.desc;
-                _task.priority = v.fields.priority;
-                _task.taskType = v.fields.taskType;
-
-                addTask(_task);
-            });
-
-            initAIView();
-            initTodoView();
+        $.ajax({
+            url: '/tomatotimer/task/read/all/', 
+            dataType: 'json',
+            success: function(data){
+                $.each(data, function(k, v) {
+                    var _task = cloneObj(t_task);
+                    _task.id = v.pk;
+                    _task.title = v.fields.title;
+                    _task.desc = v.fields.desc;
+                    _task.priority = v.fields.priority;
+                    _task.taskType = v.fields.taskType;
+                    addTask(_task);
+                });
+                initAIView();
+                initTodoView();
+            }
         });
     };
     // init application

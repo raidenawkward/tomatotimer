@@ -1,5 +1,4 @@
 from django.shortcuts import render_to_response
-from django.http import HttpResponse
 from django.core import serializers
 from tomatotimer.models import Task
 
@@ -35,7 +34,9 @@ def task_create(request):
             taskType = request.GET['taskType'],
     )
 
-    return HttpResponse('tomatotimer/json.html', {data: _task.save()})
+    return render_to_response('tomatotimer/json.html', {
+        'data': _task.save()},
+        mimetype=MIME['json'])
 
 def task_update(request, task_id):
     _task = Task(
@@ -46,22 +47,28 @@ def task_update(request, task_id):
     )
     _task.id = task_id
 
-    return HttpResponse('tomatotimer/json.html', {data: _task.save()})
+    return render_to_response('tomatotimer/json.html', {
+        'data': _task.save()},
+        mimetype=MIME['json'])
 
 def task_delete(request, task_id):
     _task = Task()
     _task.id = task_id
 
-    return HttpResponse('tomatotimer/json.html', {_task.delete(), MIME['json'])
+    return render_to_response('tomatotimer/json.html', {
+        'data': _task.delete()},
+        mimetype=MIME['json'])
 
 def task_read(request, task_id):
-    return HttpResponse('tomatotimer/json.html', {
-        data: serializers.serialize(
+    return render_to_response('tomatotimer/json.html', {
+        'data': serializers.serialize(
             FORMAT['json'],
-            Task.objects.filter(pk=task_id))})
+            Task.objects.filter(pk=task_id))},
+        mimetype=MIME['json'])
 
 def task_read_all(request):
-    return HttpResponse('tomatotimer/json.html', {
-        data: serializers.serialize(
+    return render_to_response('tomatotimer/json.html', {
+        'data': serializers.serialize(
             FORMAT['json'],
-            Task.objects.all())})
+            Task.objects.all())},
+        mimetype=MIME['json'])
