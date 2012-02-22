@@ -35,7 +35,7 @@ def task_create(request):
             taskType = request.GET['taskType'],
     )
 
-    return HttpResponse(_task.save(), MIME['json'])
+    return HttpResponse('tomatotimer/json.html', {data: _task.save()})
 
 def task_update(request, task_id):
     _task = Task(
@@ -46,24 +46,22 @@ def task_update(request, task_id):
     )
     _task.id = task_id
 
-    return HttpResponse(_task.save(), MIME['json'])
+    return HttpResponse('tomatotimer/json.html', {data: _task.save()})
 
 def task_delete(request, task_id):
     _task = Task()
     _task.id = task_id
 
-    return HttpResponse(_task.delete(), MIME['json'])
+    return HttpResponse('tomatotimer/json.html', {_task.delete(), MIME['json'])
 
 def task_read(request, task_id):
-    return HttpResponse(
-        serializers.serialize(
+    return HttpResponse('tomatotimer/json.html', {
+        data: serializers.serialize(
             FORMAT['json'],
-            Task.objects.filter(pk=task_id)),
-    MIME['json'])
+            Task.objects.filter(pk=task_id))})
 
 def task_read_all(request):
-    return HttpResponse(
-        serializers.serialize(
+    return HttpResponse('tomatotimer/json.html', {
+        data: serializers.serialize(
             FORMAT['json'],
-            Task.objects.all()),
-    MIME['json'])
+            Task.objects.all())})
