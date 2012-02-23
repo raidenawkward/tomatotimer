@@ -39,6 +39,10 @@ $(document).ready(function(){
 		"startButtonGroup", "interruptionButtonGroup", "breakButtonGroup"
 	];
 
+    var notificationGroups = [
+        "ajaxLoading", "ajaxSuccess", "ajaxError"
+    ];
+
 	var timers = [
 // RELEASE
 		{ name: "tomato", title: "Tomato", time: 1500 },
@@ -187,6 +191,19 @@ $(document).ready(function(){
                 console.log(data);
             }
         });
+    };
+
+    window.initNotificationGroup = function(name) {
+        trace('initNotificationGroup');
+
+		for (_i = 0, _len = notificationGroups.length; _i < _len; _i++) {
+			notificationGroup = notificationGroups[_i];
+			if (notificationGroup == name) {
+				$('#' + notificationGroup).slideDown("fast");
+			} else {
+				$('#' + notificationGroup).delay(2000).slideUp("fast");
+			}
+		}
     };
 
     //
@@ -736,6 +753,19 @@ $(document).ready(function(){
 
     window.init = function() {
         trace('init');
+
+        $(document).ajaxStart(function () {
+            initNotificationGroup('ajaxLoading');
+        }).ajaxSuccess(function () {
+            initNotificationGroup('ajaxSuccess');
+        }).ajaxError(function () {
+            initNotificationGroup('ajaxError');
+        }).ajaxStop(function () {
+		    for (_i = 0, _len = notificationGroups.length; _i < _len; _i++) {
+			    notificationGroup = notificationGroups[_i];
+		       	$('#' + notificationGroup).delay(8000).slideUp("slow");
+		    }
+        });
 
         $.ajax({
             url: '/tomatotimer/task/read/all/', 
