@@ -28,6 +28,7 @@ class Task(models.Model):
         return self.id
 
     def delete(self, *args, **kwargs):
+        oldid = self.id
         super(Task, self).delete(*args, **kwargs)
         # return saved task
-        return self.id
+        return oldid
