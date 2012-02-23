@@ -201,7 +201,7 @@ $(document).ready(function(){
 			if (notificationGroup == name) {
 				$('#' + notificationGroup).slideDown("fast");
 			} else {
-				$('#' + notificationGroup).delay(2000).slideUp("fast");
+				$('#' + notificationGroup).delay(1000).slideUp("fast");
 			}
 		}
     };
@@ -763,7 +763,7 @@ $(document).ready(function(){
         }).ajaxStop(function () {
 		    for (_i = 0, _len = notificationGroups.length; _i < _len; _i++) {
 			    notificationGroup = notificationGroups[_i];
-		       	$('#' + notificationGroup).delay(8000).slideUp("slow");
+		       	$('#' + notificationGroup).delay(1000).slideUp("fast");
 		    }
         });
 
