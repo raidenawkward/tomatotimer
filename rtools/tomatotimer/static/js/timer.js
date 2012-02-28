@@ -39,10 +39,6 @@ $(document).ready(function(){
 		"startButtonGroup", "interruptionButtonGroup", "breakButtonGroup"
 	];
 
-    var notificationGroups = [
-        "ajaxLoading", "ajaxSuccess", "ajaxError"
-    ];
-
 	var timers = [
 // RELEASE
 		{ name: "tomato", title: "Tomato", time: 1500 },
@@ -188,19 +184,6 @@ $(document).ready(function(){
                 console.log(data);
             }
         });
-    };
-
-    window.initNotificationGroup = function(name) {
-        trace('initNotificationGroup');
-
-		for (_i = 0, _len = notificationGroups.length; _i < _len; _i++) {
-			notificationGroup = notificationGroups[_i];
-			if (notificationGroup == name) {
-				$('#' + notificationGroup).slideDown("fast");
-			} else {
-				$('#' + notificationGroup).delay(1000).slideUp("fast");
-			}
-		}
     };
 
     //
@@ -586,6 +569,27 @@ $(document).ready(function(){
 	};
 
     //
+    // Notification Bar
+    //
+    window.notify = function(msg, additionClass) {
+        var delayTimeout = 1.5; // delay time (second).
+        var notificationBar = $('#notificationBar');
+        var notificationTitle = $("#notificationTitle");
+        notificationTitle.text(msg);
+        if (typeof additionClass == 'string') {
+            notificationBar
+                .removeClass()
+                .addClass('alert')
+                .addClass(additionClass);
+        }
+
+        notificationBar
+            .slideDown('fast')
+            .delay(1000 * delayTimeout)
+            .slideUp('fast');
+    };
+
+    //
     // EVENT HANDLER
     //
 
@@ -599,11 +603,12 @@ $(document).ready(function(){
         _task.title     = $('#iTaskTitle').val();
         _task.priority  = $('#iTaskPriority').val();
         _task.desc      = $('#iTaskDesc').val();
-        ajaxTaskCreate(_task); // add to server
+        _task.taskType  = TASK_TYPE['AI'];
 
         addTask(_task);
-        addToAI(_task.id); // change taskType
         addToAIView(_task.id); // show
+
+        ajaxTaskCreate(_task); // add to server
 
         // change view
         chAIViewGroup('AIListView');
@@ -752,16 +757,13 @@ $(document).ready(function(){
         trace('init');
 
         $(document).ajaxStart(function () {
-            initNotificationGroup('ajaxLoading');
+            notify('Loading...', 'alert-info');
         }).ajaxSuccess(function () {
-            initNotificationGroup('ajaxSuccess');
+            notify('Job Done.', 'alert-success');
         }).ajaxError(function () {
-            initNotificationGroup('ajaxError');
+            notify('An Error Occured.', 'alert-error');
         }).ajaxStop(function () {
-		    for (_i = 0, _len = notificationGroups.length; _i < _len; _i++) {
-			    notificationGroup = notificationGroups[_i];
-		       	$('#' + notificationGroup).delay(1000).slideUp("fast");
-		    }
+            // add some code here if needed.
         });
 
         $.ajax({

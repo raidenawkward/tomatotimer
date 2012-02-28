@@ -56,11 +56,3 @@ a.nohover:hover {
 html {
 	overflow: auto;
 }
-
-.notificationBar {
-    position: absolute;
-    z-index: 5;
-    top: 0;
-    border: 0;
-    padding: 0;
-}
