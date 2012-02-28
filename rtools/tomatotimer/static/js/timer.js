@@ -142,7 +142,6 @@ $(document).ready(function(){
         window._newid = null;
 
         $.ajax({
-            async: false,
             url: '/tomatotimer/task/create/',
             data: {
                 'title': task.title,
@@ -166,7 +165,6 @@ $(document).ready(function(){
         trace('ajaxTaskUpdate', {'task-id': task.id});
 
         $.ajax({
-            async: false,
             url: '/tomatotimer/task/update/' + task.id +'/',
             data: {
                 'title': task.title,
@@ -185,7 +183,6 @@ $(document).ready(function(){
         trace('ajaxTaskDelete', {'task-id': id});
 
         $.ajax({
-            async: false,
             url: '/tomatotimer/task/delete/' + id +'/',
             success: function(data) {
                 console.log(data);
